@@ -1,8 +1,9 @@
 package com.example.project2
 
 import android.util.Log
-
-class Triton(name: String, color: String) : Reptile(name, color), Speaker {
+import kotlinx.parcelize.Parcelize
+@Parcelize
+class Triton(override val name: String, override val color: String) : Reptile(name, color), Speaker {
     override fun crawl() {
         Log.d("AnimalAction", "$name triton is crawling")
     }
@@ -11,12 +12,12 @@ class Triton(name: String, color: String) : Reptile(name, color), Speaker {
         Log.d("AnimalAction", "$name triton is shedding its skin")
     }
 
-    override fun speak() {
+    override fun speak(): String {
         Log.d("AnimalAction", "$name triton says trrr")
+        return "$name triton says trrr"
     }
 
-    override fun describe() {
-        super.describe()
-        Log.d("AnimalDescription", "$name the $color triton")
+    override fun describe(): String {
+        return super.describe() + " It's a triton."
     }
 }

@@ -1,10 +1,10 @@
 package com.example.project2
 
-abstract class Mammal(val name: String, val color: String) : Animal {
+abstract class Mammal(override val name: String, override val color: String) : Animal {
     abstract fun run()
     abstract fun jump()
 
-    override fun describe() {
-        println("$name is a $color mammal.")
+    override fun describe(): String {
+        return "$name is a $color mammal."
     }
 }
