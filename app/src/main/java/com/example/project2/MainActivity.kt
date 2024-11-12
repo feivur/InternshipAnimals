@@ -31,6 +31,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Project2Theme {
+                //todo Navigation
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     ZooScreen(modifier = Modifier.padding(innerPadding))
                 }
@@ -110,6 +111,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
+            var showAnimalSelectionDialog by remember{mutableStateOf(false)}
 
             if (!deleteMode) {
                 Row(
@@ -119,8 +121,7 @@ class MainActivity : ComponentActivity() {
                     //кнопка добавления
                     Button(
                         onClick = {
-                            val intent = Intent(this@MainActivity, AnimalSelectionActivity::class.java)
-                            startActivityForResult(intent, animalRequestCode)
+                            showAnimalSelectionDialog = true
                         },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
@@ -160,6 +161,18 @@ class MainActivity : ComponentActivity() {
                         Text("Cancel", color = Color.White)
                     }
                 }
+            }
+
+            if (showAnimalSelectionDialog){
+                AnimalSelectionScreen(
+                    onSubmit = {
+                        System.out.println("submit: ${it?.name}")
+                        //todo использовать полученное значение
+                    },
+                    onDismissRequest = {
+                        showAnimalSelectionDialog = false
+                    }
+                )
             }
         }
 
