@@ -31,6 +31,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Project2Theme {
+                //todo Navigation
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     ZooScreen(modifier = Modifier.padding(innerPadding))
                 }
@@ -110,6 +111,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
+            var showAnimalSelectionDialog by remember{mutableStateOf(false)}
 
             if (!deleteMode) {
                 Row(
@@ -119,9 +121,7 @@ class MainActivity : ComponentActivity() {
                     //кнопка добавления
                     Button(
                         onClick = {
-                            val intent =
-                                Intent(this@MainActivity, AnimalSelectionActivity::class.java)
-                            startActivityForResult(intent, animalRequestCode)
+                            showAnimalSelectionDialog = true
                         },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
@@ -162,9 +162,21 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+
+            if (showAnimalSelectionDialog){
+                AnimalSelectionScreen(
+                    onSubmit = {
+                        System.out.println("submit: ${it?.name}")
+                        //todo использовать полученное значение
+                    },
+                    onDismissRequest = {
+                        showAnimalSelectionDialog = false
+                    }
+                )
+            }
         }
 
-        Box(modifier = Modifier.fillMaxSize()) {
+             Box(modifier = Modifier.fillMaxSize()) {
             SnackbarHost(
                 hostState = snackbarHostState,
                 modifier = Modifier.align(Alignment.BottomCenter)
@@ -174,14 +186,9 @@ class MainActivity : ComponentActivity() {
 //
 
 
+
     @Composable
-    fun AnimalItem(
-        animal: Animal,
-        onClick: () -> Unit,
-        onCheckedChange: (Boolean) -> Unit,
-        isSelected: Boolean,
-        deleteMode: Boolean
-    ) {
+    fun AnimalItem(animal: Animal, onClick: () -> Unit, onCheckedChange: (Boolean) -> Unit, isSelected: Boolean, deleteMode: Boolean) {
         //цвет фона в зависиости от типа
         val backgroundColor = when (animal) {
             is Mammal -> Color(0xFFFF9800)  //млекопит
@@ -198,7 +205,7 @@ class MainActivity : ComponentActivity() {
         ) {
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (deleteMode) {
+                                        if (deleteMode) {
                         Checkbox(
                             checked = isSelected,
                             onCheckedChange = onCheckedChange
@@ -215,7 +222,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-                Text(
+                             Text(
                     text = "Color - ${animal.color}",
                     style = MaterialTheme.typography.bodyMedium
                 )

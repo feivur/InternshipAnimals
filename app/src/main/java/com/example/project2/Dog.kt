@@ -2,7 +2,6 @@ package com.example.project2
 
 import android.util.Log
 import kotlinx.parcelize.Parcelize
-
 @Parcelize
 class Dog(override val name: String, override val color: String) : Mammal(name, color), Speaker {
     override fun run() {

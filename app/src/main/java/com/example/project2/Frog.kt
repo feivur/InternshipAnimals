@@ -2,7 +2,6 @@ package com.example.project2
 
 import android.util.Log
 import kotlinx.parcelize.Parcelize
-
 @Parcelize
 class Frog(override val name: String, override val color: String) : Reptile(name, color), Speaker {
     override fun crawl() {
