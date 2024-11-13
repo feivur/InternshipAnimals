@@ -1,4 +1,4 @@
-package com.example.project2
+package com.example.project2.structure
 
 import android.os.Parcelable//для передачи между компонентами приложения
 

@@ -51,6 +51,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.project2.structure.Animal
+import com.example.project2.structure.Cat
+import com.example.project2.structure.Dog
+import com.example.project2.structure.Frog
+import com.example.project2.structure.Mammal
+import com.example.project2.structure.Reptile
+import com.example.project2.structure.Triton
 import com.example.project2.ui.theme.Project2Theme
 import kotlinx.coroutines.delay
 

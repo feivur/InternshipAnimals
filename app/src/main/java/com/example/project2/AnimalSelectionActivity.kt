@@ -24,6 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.project2.structure.Animal
+import com.example.project2.structure.Cat
+import com.example.project2.structure.Dog
+import com.example.project2.structure.Frog
+import com.example.project2.structure.Triton
 
 enum class AnimalType {
     Mammal, Reptile, Cat, Dog, Frog, Triton

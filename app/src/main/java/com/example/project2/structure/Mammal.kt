@@ -1,4 +1,4 @@
-package com.example.project2
+package com.example.project2.structure
 
 abstract class Mammal(override val name: String, override val color: String) : Animal {
     abstract fun run()
