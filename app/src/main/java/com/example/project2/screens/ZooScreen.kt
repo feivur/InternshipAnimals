@@ -1,6 +1,5 @@
 package com.example.project2.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,40 +16,30 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import com.example.project2.db.AnimalsDao
 import com.example.project2.db.AnimalsEntity
-import com.example.project2.functions.addAnimal
 import com.example.project2.structure.Cat
 import com.example.project2.structure.Dog
 import com.example.project2.structure.Frog
 import com.example.project2.structure.Triton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.project2.viewmodel.AnimalsViewModel
 
 @Composable
-fun ZooScreen(
-    navController: NavController,
-    animals: List<AnimalsEntity>,
-    animalsDao: AnimalsDao // Получаем animalsDao
-) {
+fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) {
+    val animals by animalsViewModel.allAnimals.observeAsState(emptyList())
     var deleteMode by remember { mutableStateOf(false) }
     var selectedAnimals by remember { mutableStateOf(setOf<AnimalsEntity>()) }
     var showAnimalSelectionDialog by remember { mutableStateOf(false) }
     var showDeleteConfirmation by remember { mutableStateOf(false) }
     var isDeleting by remember { mutableStateOf(false) }
 
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -100,10 +89,6 @@ fun ZooScreen(
                         if (!isDeleting) {
                             isDeleting = true
                             showDeleteConfirmation = true
-                            Log.d(
-                                "ZooScreen",
-                                "Нажал на подтвердить удаление. Животные выбраны: ${selectedAnimals.map { it.name }}"
-                            )
                         }
                     },
                     modifier = Modifier.weight(1f),
@@ -117,7 +102,6 @@ fun ZooScreen(
                     onClick = {
                         deleteMode = false
                         selectedAnimals = emptySet()
-                        Log.d("ZooScreen", "Отмена нажата.")
                     },
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
@@ -143,7 +127,6 @@ fun ZooScreen(
                 Button(
                     onClick = {
                         deleteMode = !deleteMode
-                        Log.d("ZooScreen", "Режим удаления переключен. Теперь он: $deleteMode")
                     },
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
@@ -157,15 +140,9 @@ fun ZooScreen(
         if (showDeleteConfirmation) {
             LaunchedEffect(selectedAnimals) {
                 val selectedIds = selectedAnimals.map { it.id!! } // Сохраняем выбранные ID
-                Log.d("ZooScreen", "Начинаю удаление выбранных: $selectedIds")
 
                 if (selectedIds.isNotEmpty()) {
-                    lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                        animalsDao.deleteAnimals(selectedIds) // Удаляем по ID
-                        Log.d("ZooScreen", "Удаление выбранных животных завершено!!!")
-                    }
-                } else {
-                    Log.d("ZooScreen", "Животные для удаления не выбраны!")
+                    animalsViewModel.deleteAnimals(selectedIds) // Удаляем через ViewModel
                 }
 
                 // Сброс состояния после удаления
@@ -181,10 +158,16 @@ fun ZooScreen(
             AnimalSelectionScreen(
                 onSubmit = { animal ->
                     animal?.let {
-                        addAnimal(
-                            it,
-                            animalsDao = animalsDao,
-                            lifecycleScope = lifecycleOwner.lifecycleScope
+                        animalsViewModel.addAnimal(
+                            AnimalsEntity(
+                                name = it.name, color = it.color, type = when (it) {
+                                    is Cat -> "Cat"
+                                    is Dog -> "Dog"
+                                    is Frog -> "Frog"
+                                    is Triton -> "Triton"
+                                    else -> "Unknown"
+                                }
+                            )
                         )
                     }
                     showAnimalSelectionDialog = false

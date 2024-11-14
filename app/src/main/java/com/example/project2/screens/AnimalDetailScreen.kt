@@ -21,12 +21,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.project2.structure.Animal
+import com.example.project2.db.AnimalsEntity
 import com.example.project2.structure.Mammal
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AnimalDetailScreen(navController: NavController, animal: Animal) {
+fun AnimalDetailScreen(navController: NavController, animal: AnimalsEntity) {
     Scaffold(
         topBar = {
             TopAppBar(
