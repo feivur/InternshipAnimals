@@ -91,7 +91,7 @@ class MainActivity : ComponentActivity() {
                 val animals: LiveData<List<AnimalsEntity>> = animalsDao.getAllAnimals()
                 val animalsList by animals.observeAsState(emptyList())
 
-                //        навигция
+                //навигция
                 val navController = rememberNavController()
 
                 NavHost(navController = navController, startDestination = "zoo_screen") {
