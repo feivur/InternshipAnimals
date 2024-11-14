@@ -13,5 +13,5 @@ data class AnimalsEntity(
 //    @ColumnInfo(name = "animal") val animal: Animal,
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "color") val color: String?,
-    @ColumnInfo(name = "color") val width: Int
+    @ColumnInfo(name = "width") val width: Int
 )
