@@ -25,9 +25,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.project2.db.AnimalsEntity
+import com.example.project2.structure.Animal
 import com.example.project2.structure.Cat
 import com.example.project2.structure.Dog
 import com.example.project2.structure.Frog
+import com.example.project2.structure.Mammal
+import com.example.project2.structure.Reptile
 import com.example.project2.structure.Triton
 import com.example.project2.viewmodel.AnimalsViewModel
 
@@ -47,16 +50,17 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
     ) {
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(animals) { animalEntity ->
-                val animal = when (animalEntity.type) {
+                // Определение животного по типу, хранящемуся в поле "type"
+                val animal: Animal = when (animalEntity.type) {
                     "Cat" -> Cat(animalEntity.name!!, animalEntity.color!!)
                     "Dog" -> Dog(animalEntity.name!!, animalEntity.color!!)
                     "Frog" -> Frog(animalEntity.name!!, animalEntity.color!!)
                     "Triton" -> Triton(animalEntity.name!!, animalEntity.color!!)
-                    else -> throw IllegalArgumentException("UnknownType")
+                    else -> throw IllegalArgumentException("Unknown animal type: ${animalEntity.type}")
                 }
 
                 AnimalItem(
-                    animal = animal,
+                    animal = animal, // передаем объект Animal (связан с type)
                     onClick = {
                         if (!deleteMode) {
                             navController.navigate("animal_detail/${animal.name}")
@@ -165,6 +169,11 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
                                     is Dog -> "Dog"
                                     is Frog -> "Frog"
                                     is Triton -> "Triton"
+                                    else -> "Unknown"
+                                },
+                                form = when (it) {
+                                    is Mammal -> "Mammal"
+                                    is Reptile -> "Reptile"
                                     else -> "Unknown"
                                 }
                             )

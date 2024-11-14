@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.project2.db.AnimalsEntity
-import com.example.project2.structure.Mammal
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +45,7 @@ fun AnimalDetailScreen(navController: NavController, animal: AnimalsEntity) {
                 .padding(16.dp)
         ) {
             Text(
-                text = "Animal Type: ${if (animal is Mammal) "Mammal" else "Reptile"}",
+                text = "Animal Type: ${animal.form}",
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
@@ -54,7 +53,7 @@ fun AnimalDetailScreen(navController: NavController, animal: AnimalsEntity) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Animal: ${animal::class.simpleName}",
+                text = "Animal: ${animal.type}",
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp

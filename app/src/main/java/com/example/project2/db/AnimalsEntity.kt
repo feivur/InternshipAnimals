@@ -8,10 +8,9 @@ import androidx.room.PrimaryKey
 data class AnimalsEntity(
 
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
+
+    @ColumnInfo(name = "animal_form") val form: String?,
     @ColumnInfo(name = "animal_type") val type: String?,
-//    @ColumnInfo(name = "animal") val animal: Animal,
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "color") val color: String?
-//    ,@ColumnInfo(name = "width") val width: Int,
-//    @ColumnInfo(name = "height") val height: Int
 )
