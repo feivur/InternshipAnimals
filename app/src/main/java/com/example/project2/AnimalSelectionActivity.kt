@@ -1,6 +1,5 @@
 package com.example.project2
 
-//import androidx.benchmark.perfetto.Row --
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,7 +38,6 @@ fun AnimalSelectionScreen(
     onDismissRequest: () -> Unit,
     onSubmit: (Animal?) -> Unit
 ) {
-
     var selectedType by remember { mutableStateOf(AnimalType.Mammal) }
     var selectedAnimal by remember { mutableStateOf(AnimalType.Cat) }
     var name by remember { mutableStateOf("") }
@@ -49,7 +47,6 @@ fun AnimalSelectionScreen(
     Dialog(
         onDismissRequest = onDismissRequest
     ) {
-        //cписок животных в зависимости от выбраного типа
         val animalList = remember(selectedType) {
             if (selectedType == AnimalType.Mammal) listOf(
                 AnimalType.Cat,
@@ -58,19 +55,17 @@ fun AnimalSelectionScreen(
         }
 
         LaunchedEffect(selectedType) {
-            selectedAnimal =
-                animalList.first()  //выбираем первое животное если поменяли тип животного
+            selectedAnimal = animalList.first()
         }
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .background(Color.White) //todo Добавление фона
+                .background(Color.White)
         ) {
             Text("Animal Type", style = MaterialTheme.typography.bodyLarge)
 
-            // выбор типа животного
             Row {
                 RadioButton(
                     selected = selectedType == AnimalType.Mammal,
@@ -89,7 +84,6 @@ fun AnimalSelectionScreen(
 
             Text("Animal", style = MaterialTheme.typography.bodyLarge)
 
-            //выбор животного
             animalList.forEach { animal ->
                 Row {
                     RadioButton(
@@ -102,8 +96,6 @@ fun AnimalSelectionScreen(
 
             Spacer(modifier = Modifier.padding(vertical = 16.dp))
 
-            //поля для ввода
-            //имя
             TextField(
                 value = name,
                 onValueChange = { name = it },
@@ -112,7 +104,7 @@ fun AnimalSelectionScreen(
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
             )
-            //цвет
+
             TextField(
                 value = color,
                 onValueChange = { color = it },
@@ -122,7 +114,6 @@ fun AnimalSelectionScreen(
                     .padding(vertical = 8.dp)
             )
 
-            //todo кнопки Confirm и Cancel
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly

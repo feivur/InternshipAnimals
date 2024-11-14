@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-parcelize")
+    id("kotlin-kapt")
 
 }
 
@@ -22,6 +23,9 @@ android {
     }
 
     buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -46,9 +50,12 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.runtime.livedata)
+    //implementation(libs.androidx.media3.common.ktx)
     val room_version = "2.6.1"
-
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
 
     // optional - Kotlin Extensions and Coroutines support for Room
