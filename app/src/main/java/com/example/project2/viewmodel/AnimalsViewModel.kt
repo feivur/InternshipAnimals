@@ -10,8 +10,10 @@ import com.example.project2.db.AnimalsEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AnimalsViewModel(application: Application, private val animalsDao: AnimalsDao) :
-    AndroidViewModel(application) {
+class AnimalsViewModel(
+    application: Application,
+    private val animalsDao: AnimalsDao
+) : AndroidViewModel(application) {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 

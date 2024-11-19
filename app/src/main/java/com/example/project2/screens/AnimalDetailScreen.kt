@@ -43,6 +43,7 @@ fun AnimalDetailScreen(navController: NavController, animal: AnimalsEntity) {
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(16.dp)
+            //todo удобнее использовать verticalArrangement
         ) {
             Text(
                 text = "Animal Type: ${animal.form}",

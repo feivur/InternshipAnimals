@@ -17,6 +17,7 @@ fun AppNavigation(
     navController: NavHostController,
     animalsViewModel: AnimalsViewModel
 ) {
+    //todo в навигации не место внешней логике. Она лишь роутер экранов
     val animalsList by animalsViewModel.allAnimals.observeAsState(emptyList())
 
     NavHost(navController = navController, startDestination = "zoo_screen") {
@@ -26,6 +27,7 @@ fun AppNavigation(
                 animalsViewModel = animalsViewModel
             )
         }
+        //todo что будет, если animalName повторится у другого итема?
         composable(
             "animal_detail/{animalName}",
             arguments = listOf(navArgument("animalName") { type = NavType.StringType })

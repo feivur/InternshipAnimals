@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.project2.db.RoomDB
 import com.example.project2.navigation.AppNavigation
+import com.example.project2.screens.test.TestScreen
 import com.example.project2.viewmodel.AnimalsViewModel
 import com.example.project2.viewmodel.AnimalsViewModelFactory
 
@@ -55,6 +56,10 @@ class MainActivity : ComponentActivity() {
                     navController = navController
                 )
             }
+        }
+
+        setContent{
+            TestScreen()
         }
     }
 }
