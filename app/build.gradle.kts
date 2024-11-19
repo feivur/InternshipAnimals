@@ -89,6 +89,9 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+
 //    implementation(libs.androidx.storage)
 //    implementation(libs.androidx.benchmark.macro)
     testImplementation(libs.junit)
