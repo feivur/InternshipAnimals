@@ -1,5 +1,6 @@
 package com.example.project2
 
+//import com.example.project2.screens.test.TestScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,7 +16,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.project2.db.RoomDB
 import com.example.project2.navigation.AppNavigation
-import com.example.project2.screens.test.TestScreen
 import com.example.project2.viewmodel.AnimalsViewModel
 import com.example.project2.viewmodel.AnimalsViewModelFactory
 
@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
             applicationContext,
             RoomDB::class.java, "animals_db"
         )
-            //.fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration()
             .build().animalsDao()
 
         val viewModelFactory = AnimalsViewModelFactory(application, animalsDao)
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
             val isLoading by animalsViewModel.isLoading.observeAsState(true)
 
 
-            //индикатор загрудки
+            //индикатор загрузки
             if (isLoading) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -58,8 +58,8 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        setContent{
-            TestScreen()
-        }
+//        setContent{
+//            TestScreen()
+//        }
     }
 }

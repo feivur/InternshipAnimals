@@ -29,8 +29,11 @@ import com.example.project2.structure.Dog
 import com.example.project2.structure.Frog
 import com.example.project2.structure.Triton
 
+enum class AnimalForm {
+    Mammal, Reptile
+}
 enum class AnimalType {
-    Mammal, Reptile, Cat, Dog, Frog, Triton
+    Cat, Dog, Frog, Triton
 }
 
 @Composable
@@ -38,7 +41,7 @@ fun AnimalSelectionScreen(
     onDismissRequest: () -> Unit,
     onSubmit: (Animal?) -> Unit
 ) {
-    var selectedType by remember { mutableStateOf(AnimalType.Mammal) }
+    var selectedType by remember { mutableStateOf(AnimalForm.Mammal) }
     var selectedAnimal by remember { mutableStateOf(AnimalType.Cat) }
     var name by remember { mutableStateOf("") }
     var color by remember { mutableStateOf("") }
@@ -48,7 +51,7 @@ fun AnimalSelectionScreen(
         onDismissRequest = onDismissRequest
     ) {
         val animalList = remember(selectedType) {
-            if (selectedType == AnimalType.Mammal) listOf(
+            if (selectedType == AnimalForm.Mammal) listOf(
                 AnimalType.Cat,
                 AnimalType.Dog
             ) else listOf(AnimalType.Frog, AnimalType.Triton)
@@ -68,14 +71,14 @@ fun AnimalSelectionScreen(
 
             Row {
                 RadioButton(
-                    selected = selectedType == AnimalType.Mammal,
-                    onClick = { selectedType = AnimalType.Mammal }
+                    selected = selectedType == AnimalForm.Mammal,
+                    onClick = { selectedType = AnimalForm.Mammal }
                 )
                 Text("Mammal", modifier = Modifier.padding(start = 8.dp))
 
                 RadioButton(
-                    selected = selectedType == AnimalType.Reptile,
-                    onClick = { selectedType = AnimalType.Reptile }
+                    selected = selectedType == AnimalForm.Reptile,
+                    onClick = { selectedType = AnimalForm.Reptile }
                 )
                 Text("Reptile", modifier = Modifier.padding(start = 8.dp))
             }
@@ -125,7 +128,7 @@ fun AnimalSelectionScreen(
                             AnimalType.Dog -> onSubmit(Dog(name, color))
                             AnimalType.Frog -> onSubmit(Frog(name, color))
                             AnimalType.Triton -> onSubmit(Triton(name, color))
-                            else -> onSubmit(null)
+                            //else -> onSubmit(null)
                         }
                     },
                     enabled = isFormValid,

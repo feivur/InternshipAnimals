@@ -34,6 +34,7 @@ import com.example.project2.structure.Reptile
 import com.example.project2.structure.Triton
 import com.example.project2.viewmodel.AnimalsViewModel
 
+
 @Composable
 fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) {
     val animals by animalsViewModel.allAnimals.observeAsState(emptyList())
@@ -50,7 +51,7 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
     ) {
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(animals) { animalEntity ->
-                // Определение животного по типу, хранящемуся в поле "type"
+                //определение животного по типу
                 val animal: Animal = when (animalEntity.type) {
                     "Cat" -> Cat(animalEntity.name!!, animalEntity.color!!)
                     "Dog" -> Dog(animalEntity.name!!, animalEntity.color!!)
@@ -60,7 +61,7 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
                 }
 
                 AnimalItem(
-                    animal = animal, // передаем объект Animal (связан с type)
+                    animal = animal,
                     onClick = {
                         if (!deleteMode) {
                             navController.navigate("animal_detail/${animal.name}")
@@ -80,7 +81,6 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
             }
         }
 
-        // Кнопки для подтверждения и отмены удаления
         if (deleteMode) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -140,16 +140,16 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
             }
         }
 
-        // Подтверждение удаления
+        //подтверждение удаления
         if (showDeleteConfirmation) {
             LaunchedEffect(selectedAnimals) {
-                val selectedIds = selectedAnimals.map { it.id!! } // Сохраняем выбранные ID
+                val selectedIds = selectedAnimals.map { it.id } //сохраняем выбранные ID
 
                 if (selectedIds.isNotEmpty()) {
-                    animalsViewModel.deleteAnimals(selectedIds) // Удаляем через ViewModel
+                    animalsViewModel.deleteAnimals(selectedIds) //удаляем через ViewModel
                 }
 
-                // Сброс состояния после удаления
+                //сброс состояния после удаления
                 deleteMode = false
                 selectedAnimals = emptySet()
                 showDeleteConfirmation = false
@@ -157,7 +157,7 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
             }
         }
 
-        // Диалог для добавления животного
+        //диалог для добавления животного
         if (showAnimalSelectionDialog) {
             AnimalSelectionScreen(
                 onSubmit = { animal ->

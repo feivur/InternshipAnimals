@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.example.project2.db.AnimalsDao
 import com.example.project2.db.RoomDB
 
-class App: Application() {
+class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -17,9 +17,9 @@ class App: Application() {
             .build().animalsDao()
     }
 
-    companion object{
+    companion object {
         //var instaApp
-        var animalsDao:  AnimalsDao? = null
+        var animalsDao: AnimalsDao? = null
             private set
     }
 }
