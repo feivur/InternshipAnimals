@@ -12,10 +12,17 @@ class AnimalRepository(private val animalsDao: AnimalsDao) {
 
     val animalList: LiveData<List<AnimalsEntity>> = animalsDao.getAllAnimals()
 
-    fun insertAnimal(animalsEntity: AnimalsEntity) {
+    // Добавление животного
+    fun insertAnimal(animal: AnimalsEntity) {
         coroutineScope.launch(Dispatchers.IO) {
-            animalsDao.insertAnimal(animalsEntity)
+            animalsDao.insertAnimal(animal)
         }
     }
 
+    // Удаление животных по ID
+    fun deleteAnimals(selectedIds: List<Long>) {
+        coroutineScope.launch(Dispatchers.IO) {
+            animalsDao.deleteAnimals(selectedIds)
+        }
+    }
 }

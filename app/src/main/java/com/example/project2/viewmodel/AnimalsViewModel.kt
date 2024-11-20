@@ -6,60 +6,50 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.example.project2.db.AnimalsDao
 import com.example.project2.db.AnimalsEntity
 import com.example.project2.db.RoomDB
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.project2.screens.AnimalForm
+import com.example.project2.screens.AnimalType
 
-class AnimalsViewModel(application: Application, private val animalsDao: AnimalsDao) :
-    AndroidViewModel(application) {
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> get() = _isLoading
-
-    val animalList: LiveData<List<AnimalsEntity>> //=
+class AnimalsViewModel(application: Application) : AndroidViewModel(application) {
+    val animalList: LiveData<List<AnimalsEntity>>
     private val repository: AnimalRepository
-    var animalForm by mutableStateOf("")
-    var animalType by mutableStateOf("")
     var animalName by mutableStateOf("")
     var animalColor by mutableStateOf("")
-
+    var animalType by mutableStateOf(AnimalType.Cat) // Изменяем тип по умолчанию
+    var animalForm by mutableStateOf(AnimalForm.Mammal) // Изменяем форму по умолчанию
+    var selectedAnimalIds by mutableStateOf(emptyList<Long>()) // Для выбранных животных
 
     init {
-        val animalDb = RoomDB.getInstance(application)
-        val animalsDao = animalDb.animalsDao()
+        val animalsDao = RoomDB.getInstance(application).animalsDao()
         repository = AnimalRepository(animalsDao)
         animalList = repository.animalList
-
-        loadAnimals()
     }
 
-    //для наблюдения за списком животных
-    val allAnimals: LiveData<List<AnimalsEntity>> = animalsDao.getAllAnimals()
-
-    //для добавления животного
-    fun addAnimal(animal: AnimalsEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
-            animalsDao.insertAnimal(animal)
-        }
+    // Управление состоянием ввода
+    fun changeName(value: String) {
+        animalName = value
     }
 
-    //для удаления животных
-    fun deleteAnimals(selectedIds: List<Long>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            animalsDao.deleteAnimals(selectedIds)
-        }
+    fun changeColor(value: String) {
+        animalColor = value
     }
 
-    //на случай пустой бд
-    private fun loadAnimals() {
-        //флаг загрузки
-        _isLoading.value = true
-        viewModelScope.launch {
-            val animals = animalsDao.getAllAnimals()
-            _isLoading.value = false
-        }
+    // Добавление животного
+    fun addAnimal() {
+        repository.insertAnimal(
+            AnimalsEntity(
+                name = animalName,
+                color = animalColor,
+                type = animalType, // Передаем тип животного
+                form = animalForm // Передаем форму животного
+            )
+        )
+    }
+
+    // Удаление выбранных животных
+    fun deleteSelectedAnimals() {
+        repository.deleteAnimals(selectedAnimalIds)
+        selectedAnimalIds = emptyList() // Сбросить выбор
     }
 }

@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
             .fallbackToDestructiveMigration()
             .build().animalsDao()
 
-        val viewModelFactory = AnimalsViewModelFactory(application, animalsDao)
+        val viewModelFactory = AnimalsViewModelFactory(application) //,animalsDao)
         val animalsViewModel: AnimalsViewModel by viewModels { viewModelFactory }
 
 
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                     "AnimalsViewModel",
                     AnimalsViewModelFactory(
                         LocalContext.current.applicationContext as Application,
-                        animalsDao = animalsDao
+                        //animalsDao = animalsDao
                     )
 
                 )

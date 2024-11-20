@@ -123,12 +123,12 @@ fun AnimalSelectionScreen(
             ) {
                 Button(
                     onClick = {
+                        // Отправка правильных данных в onSubmit
                         when (selectedAnimal) {
                             AnimalType.Cat -> onSubmit(Cat(name, color))
                             AnimalType.Dog -> onSubmit(Dog(name, color))
                             AnimalType.Frog -> onSubmit(Frog(name, color))
                             AnimalType.Triton -> onSubmit(Triton(name, color))
-                            //else -> onSubmit(null)
                         }
                     },
                     enabled = isFormValid,

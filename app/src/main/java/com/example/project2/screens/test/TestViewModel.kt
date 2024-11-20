@@ -1,12 +1,6 @@
 package com.example.project2.screens.test
 
-import android.app.Application
-import android.content.Context
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.project2.App
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,7 +28,6 @@ class TestViewModel(): ViewModel() {
     }
 
     fun foo(){
-        //todo dao?.deleteAnimals()
     }
 
 }

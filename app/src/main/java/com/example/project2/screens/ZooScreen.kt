@@ -14,7 +14,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -25,24 +24,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.project2.db.AnimalsEntity
-import com.example.project2.structure.Animal
-import com.example.project2.structure.Cat
-import com.example.project2.structure.Dog
-import com.example.project2.structure.Frog
-import com.example.project2.structure.Mammal
-import com.example.project2.structure.Reptile
-import com.example.project2.structure.Triton
 import com.example.project2.viewmodel.AnimalsViewModel
-
 
 @Composable
 fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) {
-    val animals by animalsViewModel.allAnimals.observeAsState(emptyList())
+    val animals by animalsViewModel.animalList.observeAsState(emptyList())
     var deleteMode by remember { mutableStateOf(false) }
     var selectedAnimals by remember { mutableStateOf(setOf<AnimalsEntity>()) }
     var showAnimalSelectionDialog by remember { mutableStateOf(false) }
-    var showDeleteConfirmation by remember { mutableStateOf(false) }
-    var isDeleting by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -51,13 +40,7 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
     ) {
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(animals) { animalEntity ->
-                val animal: Animal = when (animalEntity.type) {
-                    AnimalType.Cat -> Cat(animalEntity.name, animalEntity.color)
-                    AnimalType.Dog -> Dog(animalEntity.name, animalEntity.color)
-                    AnimalType.Frog -> Frog(animalEntity.name, animalEntity.color)
-                    AnimalType.Triton -> Triton(animalEntity.name, animalEntity.color)
-                    else -> throw IllegalArgumentException("Unknown animal type: ${animalEntity.type}")
-                }
+                val animal = animalEntity.toAnimal() // Преобразование AnimalsEntity в Animal
 
                 AnimalItem(
                     animal = animal,
@@ -80,46 +63,15 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
             }
         }
 
-
-        if (deleteMode) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 40.dp)
-            ) {
-                Button(
-                    onClick = {
-                        if (!isDeleting) {
-                            isDeleting = true
-                            showDeleteConfirmation = true
-                        }
-                    },
-                    modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-                    enabled = !isDeleting
-                ) {
-                    Text("Confirm", color = Color.White)
-                }
-
-                Button(
-                    onClick = {
-                        deleteMode = false
-                        selectedAnimals = emptySet()
-                    },
-                    modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
-                ) {
-                    Text("Cancel", color = Color.White)
-                }
-            }
-        } else {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 40.dp)
-            ) {
+        // Кнопки управления
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 40.dp)
+        ) {
+            if (!deleteMode) {
+                // Кнопка добавления животного
                 Button(
                     onClick = { showAnimalSelectionDialog = true },
                     modifier = Modifier.weight(1f),
@@ -127,70 +79,51 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
                 ) {
                     Text("Add Animal", color = Color.White)
                 }
+            }
 
-                Button(
-                    onClick = {
-                        deleteMode = !deleteMode
-                    },
-                    modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
-                ) {
-                    Text("Delete Animals", color = Color.White)
-                }
+            // Кнопка для режима удаления
+            Button(
+                onClick = { deleteMode = !deleteMode },
+                modifier = Modifier.weight(1f),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+            ) {
+                Text(if (deleteMode) "Cancel" else "Delete Animals", color = Color.White)
             }
         }
 
-        //подтверждение удаления
-        if (showDeleteConfirmation) {
-            LaunchedEffect(selectedAnimals) {
-                val selectedIds = selectedAnimals.map { it.id } //сохраняем выбранные ID
-
-                if (selectedIds.isNotEmpty()) {
-                    animalsViewModel.deleteAnimals(selectedIds) //удаляем через ViewModel
-                }
-
-                //сброс состояния после удаления
-                deleteMode = false
-                selectedAnimals = emptySet()
-                showDeleteConfirmation = false
-                isDeleting = false
+        // Кнопка подтверждения удаления
+        if (deleteMode && selectedAnimals.isNotEmpty()) {
+            Button(
+                onClick = {
+                    animalsViewModel.selectedAnimalIds = selectedAnimals.map { it.id }
+                    animalsViewModel.deleteSelectedAnimals()
+                    deleteMode = false
+                    selectedAnimals = emptySet()
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+            ) {
+                Text("Delete Selected Animals")
             }
         }
 
-        //диалог для добавления животного
+        // Диалог для добавления животного
         if (showAnimalSelectionDialog) {
             AnimalSelectionScreen(
                 onSubmit = { animal ->
-                    animal?.let {
-                        val animalType = when (it) {
-                            is Cat -> AnimalType.Cat
-                            is Dog -> AnimalType.Dog
-                            is Frog -> AnimalType.Frog
-                            is Triton -> AnimalType.Triton
-                            else -> throw IllegalArgumentException("Unknown animal type")
-                        }
-
-                        val animalForm = when (it) {
-                            is Mammal -> AnimalForm.Mammal
-                            is Reptile -> AnimalForm.Reptile
-                            else -> throw IllegalArgumentException("Unknown animal form")
-                        }
-
-                        animalsViewModel.addAnimal(
-                            AnimalsEntity(
-                                form = animalForm,
-                                type = animalType,
-                                name = it.name,
-                                color = it.color
-                            )
-                        )
-                    }
+                    animalsViewModel.changeName(animal?.name ?: "")
+                    animalsViewModel.changeColor(animal?.color ?: "")
+                    // Передаем тип и форму животного, чтобы сохранить их
+                    animalsViewModel.animalType = animal?.type ?: AnimalType.Cat // Передаем тип
+                    animalsViewModel.animalForm =
+                        animal?.form ?: AnimalForm.Mammal // Передаем форму
+                    animalsViewModel.addAnimal() // Добавляем животное в базу данных
                     showAnimalSelectionDialog = false
                 },
                 onDismissRequest = { showAnimalSelectionDialog = false }
             )
-
         }
     }
 }
-
