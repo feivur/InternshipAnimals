@@ -18,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,16 +36,16 @@ enum class AnimalForm {
 enum class AnimalType {
     Cat, Dog, Frog, Triton
 }
-
 @Composable
 fun AnimalSelectionScreen(
     onDismissRequest: () -> Unit,
     onSubmit: (Animal?) -> Unit
 ) {
-    var selectedType by remember { mutableStateOf(AnimalForm.Mammal) }
-    var selectedAnimal by remember { mutableStateOf(AnimalType.Cat) }
-    var name by remember { mutableStateOf("") }
-    var color by remember { mutableStateOf("") }
+
+    var selectedType by rememberSaveable { mutableStateOf(AnimalForm.Mammal) }
+    var selectedAnimal by rememberSaveable { mutableStateOf(AnimalType.Cat) }
+    var name by rememberSaveable { mutableStateOf("") }
+    var color by rememberSaveable { mutableStateOf("") }
     val isFormValid = name.isNotEmpty() && color.isNotEmpty()
 
     Dialog(
@@ -57,6 +58,7 @@ fun AnimalSelectionScreen(
             ) else listOf(AnimalType.Frog, AnimalType.Triton)
         }
 
+        //сборс выбранного животного при смене типа
         LaunchedEffect(selectedType) {
             selectedAnimal = animalList.first()
         }
@@ -69,6 +71,7 @@ fun AnimalSelectionScreen(
         ) {
             Text("Animal Type", style = MaterialTheme.typography.bodyLarge)
 
+            //для выбора типа
             Row {
                 RadioButton(
                     selected = selectedType == AnimalForm.Mammal,
@@ -87,6 +90,7 @@ fun AnimalSelectionScreen(
 
             Text("Animal", style = MaterialTheme.typography.bodyLarge)
 
+            // для выбора животного в зависимости от типа
             animalList.forEach { animal ->
                 Row {
                     RadioButton(
@@ -99,6 +103,7 @@ fun AnimalSelectionScreen(
 
             Spacer(modifier = Modifier.padding(vertical = 16.dp))
 
+            //для ввода имени животного
             TextField(
                 value = name,
                 onValueChange = { name = it },
@@ -108,6 +113,7 @@ fun AnimalSelectionScreen(
                     .padding(vertical = 8.dp)
             )
 
+            //для ввода цвета животного
             TextField(
                 value = color,
                 onValueChange = { color = it },

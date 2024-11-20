@@ -14,8 +14,8 @@ import com.example.project2.screens.AnimalType
 class AnimalsViewModel(application: Application) : AndroidViewModel(application) {
     val animalList: LiveData<List<AnimalsEntity>>
     private val repository: AnimalRepository
-    var animalName by mutableStateOf("")
-    var animalColor by mutableStateOf("")
+    private var animalName by mutableStateOf("")
+    private var animalColor by mutableStateOf("")
     var animalType by mutableStateOf(AnimalType.Cat)
     var animalForm by mutableStateOf(AnimalForm.Mammal)
     var selectedAnimalIds by mutableStateOf(emptyList<Long>())
@@ -26,7 +26,6 @@ class AnimalsViewModel(application: Application) : AndroidViewModel(application)
         animalList = repository.animalList
     }
 
-    //управление состоянием ввода
     fun changeName(value: String) {
         animalName = value
     }
@@ -35,7 +34,7 @@ class AnimalsViewModel(application: Application) : AndroidViewModel(application)
         animalColor = value
     }
 
-    //добавление животного
+    // добавление животного
     fun addAnimal() {
         repository.insertAnimal(
             AnimalsEntity(
@@ -47,7 +46,7 @@ class AnimalsViewModel(application: Application) : AndroidViewModel(application)
         )
     }
 
-    //eдаление выбранных животных
+    // удаление выбранных животных
     fun deleteSelectedAnimals() {
         repository.deleteAnimals(selectedAnimalIds)
         selectedAnimalIds = emptyList()

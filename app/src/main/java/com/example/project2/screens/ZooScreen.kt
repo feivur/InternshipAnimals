@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,12 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.project2.db.AnimalsEntity
 import com.example.project2.viewmodel.AnimalsViewModel
+
 @Composable
 fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) {
     val animals by animalsViewModel.animalList.observeAsState(emptyList())
-    var deleteMode by remember { mutableStateOf(false) }
-    var selectedAnimals by remember { mutableStateOf(setOf<AnimalsEntity>()) }
-    var showAnimalSelectionDialog by remember { mutableStateOf(false) }
+    var deleteMode by rememberSaveable { mutableStateOf(false) }
+    var selectedAnimals by rememberSaveable { mutableStateOf(setOf<AnimalsEntity>()) }
+    var showAnimalSelectionDialog by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -39,7 +40,7 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
     ) {
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(animals) { animalEntity ->
-                val animal = animalEntity.toAnimal() //преобразование
+                val animal = animalEntity.toAnimal()
 
                 AnimalItem(
                     animal = animal,
