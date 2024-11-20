@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.project2.db.AnimalsEntity
 import com.example.project2.viewmodel.AnimalsViewModel
-
 @Composable
 fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) {
     val animals by animalsViewModel.animalList.observeAsState(emptyList())
@@ -40,7 +39,7 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
     ) {
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(animals) { animalEntity ->
-                val animal = animalEntity.toAnimal() // Преобразование AnimalsEntity в Animal
+                val animal = animalEntity.toAnimal() //преобразование
 
                 AnimalItem(
                     animal = animal,
@@ -63,7 +62,7 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
             }
         }
 
-        // Кнопки управления
+        //кнопки управления
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
@@ -71,7 +70,7 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
                 .padding(horizontal = 40.dp)
         ) {
             if (!deleteMode) {
-                // Кнопка добавления животного
+                //кнопка добавления животного
                 Button(
                     onClick = { showAnimalSelectionDialog = true },
                     modifier = Modifier.weight(1f),
@@ -81,18 +80,18 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
                 }
             }
 
-            // Кнопка для режима удаления
+            //кнопка для режима удаления
             Button(
                 onClick = { deleteMode = !deleteMode },
                 modifier = Modifier.weight(1f),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                colors = ButtonDefaults.buttonColors(containerColor = if (deleteMode) Color.Gray else Color.Red)
             ) {
                 Text(if (deleteMode) "Cancel" else "Delete Animals", color = Color.White)
             }
         }
 
-        // Кнопка подтверждения удаления
-        if (deleteMode && selectedAnimals.isNotEmpty()) {
+        //кнопка для удаления выбранных животных
+        if (deleteMode) {
             Button(
                 onClick = {
                     animalsViewModel.selectedAnimalIds = selectedAnimals.map { it.id }
@@ -105,21 +104,20 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
                     .fillMaxWidth()
                     .padding(top = 8.dp)
             ) {
-                Text("Delete Selected Animals")
+                Text("Delete", color = Color.White)
             }
         }
 
-        // Диалог для добавления животного
+        //для добавления животного
         if (showAnimalSelectionDialog) {
             AnimalSelectionScreen(
                 onSubmit = { animal ->
                     animalsViewModel.changeName(animal?.name ?: "")
                     animalsViewModel.changeColor(animal?.color ?: "")
-                    // Передаем тип и форму животного, чтобы сохранить их
-                    animalsViewModel.animalType = animal?.type ?: AnimalType.Cat // Передаем тип
+                    animalsViewModel.animalType = animal?.type ?: AnimalType.Cat
                     animalsViewModel.animalForm =
-                        animal?.form ?: AnimalForm.Mammal // Передаем форму
-                    animalsViewModel.addAnimal() // Добавляем животное в базу данных
+                        animal?.form ?: AnimalForm.Mammal
+                    animalsViewModel.addAnimal() //добавляем животное в БД
                     showAnimalSelectionDialog = false
                 },
                 onDismissRequest = { showAnimalSelectionDialog = false }
@@ -127,3 +125,4 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
         }
     }
 }
+

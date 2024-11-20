@@ -16,9 +16,9 @@ class AnimalsViewModel(application: Application) : AndroidViewModel(application)
     private val repository: AnimalRepository
     var animalName by mutableStateOf("")
     var animalColor by mutableStateOf("")
-    var animalType by mutableStateOf(AnimalType.Cat) // Изменяем тип по умолчанию
-    var animalForm by mutableStateOf(AnimalForm.Mammal) // Изменяем форму по умолчанию
-    var selectedAnimalIds by mutableStateOf(emptyList<Long>()) // Для выбранных животных
+    var animalType by mutableStateOf(AnimalType.Cat)
+    var animalForm by mutableStateOf(AnimalForm.Mammal)
+    var selectedAnimalIds by mutableStateOf(emptyList<Long>())
 
     init {
         val animalsDao = RoomDB.getInstance(application).animalsDao()
@@ -26,7 +26,7 @@ class AnimalsViewModel(application: Application) : AndroidViewModel(application)
         animalList = repository.animalList
     }
 
-    // Управление состоянием ввода
+    //управление состоянием ввода
     fun changeName(value: String) {
         animalName = value
     }
@@ -35,21 +35,21 @@ class AnimalsViewModel(application: Application) : AndroidViewModel(application)
         animalColor = value
     }
 
-    // Добавление животного
+    //добавление животного
     fun addAnimal() {
         repository.insertAnimal(
             AnimalsEntity(
                 name = animalName,
                 color = animalColor,
-                type = animalType, // Передаем тип животного
-                form = animalForm // Передаем форму животного
+                type = animalType,
+                form = animalForm
             )
         )
     }
 
-    // Удаление выбранных животных
+    //eдаление выбранных животных
     fun deleteSelectedAnimals() {
         repository.deleteAnimals(selectedAnimalIds)
-        selectedAnimalIds = emptyList() // Сбросить выбор
+        selectedAnimalIds = emptyList()
     }
 }

@@ -19,10 +19,10 @@ class AnimalsEntity {
     var id: Long = 0
 
     @ColumnInfo(name = "animalForm")
-    var form: AnimalForm = AnimalForm.Mammal
+    var form: AnimalForm = AnimalForm.Mammal//todo +
 
     @ColumnInfo(name = "animalType")
-    var type: AnimalType = AnimalType.Cat // Здесь по умолчанию
+    var type: AnimalType = AnimalType.Cat
 
     @ColumnInfo(name = "animalName")
     var name: String = ""
@@ -39,7 +39,6 @@ class AnimalsEntity {
         this.color = color
     }
 
-    // Преобразование в Animal
     fun toAnimal(): Animal {
         return when (this.type) {
             AnimalType.Cat -> Cat(name, color)

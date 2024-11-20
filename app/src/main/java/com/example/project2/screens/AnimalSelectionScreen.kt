@@ -123,7 +123,6 @@ fun AnimalSelectionScreen(
             ) {
                 Button(
                     onClick = {
-                        // Отправка правильных данных в onSubmit
                         when (selectedAnimal) {
                             AnimalType.Cat -> onSubmit(Cat(name, color))
                             AnimalType.Dog -> onSubmit(Dog(name, color))

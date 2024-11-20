@@ -1,9 +1,7 @@
 package com.example.project2.screens
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -16,9 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.project2.db.AnimalsEntity
@@ -42,38 +40,37 @@ fun AnimalDetailScreen(navController: NavController, animal: AnimalsEntity) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp)
-            //todo удобнее использовать verticalArrangement
+                .padding(dimensionResource(id = com.example.project2.R.dimen.size_m)),
+            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(
+                dimensionResource(id = com.example.project2.R.dimen.size_s)
+            ) // todo +
         ) {
             Text(
                 text = "Animal Type: ${animal.form}",
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
+                    fontSize = dimensionResource(id = com.example.project2.R.dimen.text_size_l).value.sp //
                 )
             )
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Animal: ${animal.type}",
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
+                    fontSize = dimensionResource(id = com.example.project2.R.dimen.text_size_l).value.sp //
                 )
             )
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Name: ${animal.name}",
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontStyle = FontStyle.Italic,
-                    fontSize = 20.sp
+                    fontSize = dimensionResource(id = com.example.project2.R.dimen.text_size_l).value.sp //
                 )
             )
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Color: ${animal.color}",
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontStyle = FontStyle.Italic,
-                    fontSize = 20.sp
+                    fontSize = dimensionResource(id = com.example.project2.R.dimen.text_size_l).value.sp //
                 )
             )
         }

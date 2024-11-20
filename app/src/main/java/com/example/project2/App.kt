@@ -13,7 +13,7 @@ class App : Application() {
             applicationContext,
             RoomDB::class.java, "animals_db"
         )
-            //.fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration()
             .build().animalsDao()
     }
 
