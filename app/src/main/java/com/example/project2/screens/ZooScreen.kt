@@ -51,12 +51,11 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
     ) {
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(animals) { animalEntity ->
-                //определение животного по типу
                 val animal: Animal = when (animalEntity.type) {
-                    "Cat" -> Cat(animalEntity.name!!, animalEntity.color!!)
-                    "Dog" -> Dog(animalEntity.name!!, animalEntity.color!!)
-                    "Frog" -> Frog(animalEntity.name!!, animalEntity.color!!)
-                    "Triton" -> Triton(animalEntity.name!!, animalEntity.color!!)
+                    AnimalType.Cat -> Cat(animalEntity.name, animalEntity.color)
+                    AnimalType.Dog -> Dog(animalEntity.name, animalEntity.color)
+                    AnimalType.Frog -> Frog(animalEntity.name, animalEntity.color)
+                    AnimalType.Triton -> Triton(animalEntity.name, animalEntity.color)
                     else -> throw IllegalArgumentException("Unknown animal type: ${animalEntity.type}")
                 }
 
@@ -64,7 +63,7 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
                     animal = animal,
                     onClick = {
                         if (!deleteMode) {
-                            navController.navigate("animal_detail/${animal.name}")
+                            navController.navigate("animal_detail/${animalEntity.id}")
                         }
                     },
                     onCheckedChange = { isChecked ->
@@ -80,6 +79,7 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
                 Spacer(modifier = Modifier.height(2.dp))
             }
         }
+
 
         if (deleteMode) {
             Row(
@@ -162,20 +162,26 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
             AnimalSelectionScreen(
                 onSubmit = { animal ->
                     animal?.let {
+                        val animalType = when (it) {
+                            is Cat -> AnimalType.Cat
+                            is Dog -> AnimalType.Dog
+                            is Frog -> AnimalType.Frog
+                            is Triton -> AnimalType.Triton
+                            else -> throw IllegalArgumentException("Unknown animal type")
+                        }
+
+                        val animalForm = when (it) {
+                            is Mammal -> AnimalForm.Mammal
+                            is Reptile -> AnimalForm.Reptile
+                            else -> throw IllegalArgumentException("Unknown animal form")
+                        }
+
                         animalsViewModel.addAnimal(
                             AnimalsEntity(
-                                name = it.name, color = it.color, type = when (it) {
-                                    is Cat -> "Cat"
-                                    is Dog -> "Dog"
-                                    is Frog -> "Frog"
-                                    is Triton -> "Triton"
-                                    else -> "Unknown"
-                                },
-                                form = when (it) {
-                                    is Mammal -> "Mammal"
-                                    is Reptile -> "Reptile"
-                                    else -> "Unknown"
-                                }
+                                form = animalForm,
+                                type = animalType,
+                                name = it.name,
+                                color = it.color
                             )
                         )
                     }
@@ -183,6 +189,8 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
                 },
                 onDismissRequest = { showAnimalSelectionDialog = false }
             )
+
         }
     }
 }
+

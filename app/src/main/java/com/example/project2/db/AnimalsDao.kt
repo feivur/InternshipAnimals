@@ -10,9 +10,13 @@ interface AnimalsDao {
     @Insert
     suspend fun insertAnimal(animal: AnimalsEntity) // addanimal
 
-    @Query("DELETE FROM animals WHERE id IN (:ids)")
+    @Query("DELETE FROM animals WHERE animalId IN (:ids)")
     suspend fun deleteAnimals(ids: List<Long>)
     // получение всех животных через lifedata
     @Query("SELECT * FROM animals")
     fun getAllAnimals(): LiveData<List<AnimalsEntity>>
+
+    @Query("DELETE FROM animals WHERE animalId = :id")
+    fun deleteAnimal(id: Int)
+
 }
