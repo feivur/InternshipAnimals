@@ -1,17 +1,14 @@
 package com.example.project2
 
 //import com.example.project2.screens.test.TestScreen
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.project2.db.RoomDB
@@ -35,31 +32,30 @@ class MainActivity : ComponentActivity() {
         val viewModelFactory = AnimalsViewModelFactory(application, animalsDao)
         val animalsViewModel: AnimalsViewModel by viewModels { viewModelFactory }
 
+
         setContent {
-            val navController = rememberNavController()
-            //наблюдаем за состоянием данных
-            val animals by animalsViewModel.allAnimals.observeAsState(emptyList())
-            val isLoading by animalsViewModel.isLoading.observeAsState(true)
+            val owner = LocalViewModelStoreOwner.current
 
+            owner?.let {
+                val viewModel: AnimalsViewModel = viewModel(
+                    it,
+                    "AnimalsViewModel",
+                    AnimalsViewModelFactory(
+                        LocalContext.current.applicationContext as Application,
+                        animalsDao = animalsDao
+                    )
 
-            //индикатор загрузки
-            if (isLoading) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            } else {
-                AppNavigation(
-                    animalsViewModel = animalsViewModel,
-                    navController = navController
                 )
-            }
-        }
 
-//        setContent{
-//            TestScreen()
-//        }
+
+            }
+            val navController = rememberNavController()
+            AppNavigation(
+                animalsViewModel = animalsViewModel,
+                navController = navController
+            )
     }
+}
+
+
 }
