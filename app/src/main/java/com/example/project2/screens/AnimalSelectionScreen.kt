@@ -22,13 +22,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.project2.structure.Animal
 import com.example.project2.structure.Cat
 import com.example.project2.structure.Dog
 import com.example.project2.structure.Frog
 import com.example.project2.structure.Triton
+import com.example.project2.ui.theme.values.M
+import com.example.project2.ui.theme.values.S
 
 enum class AnimalForm {
     Mammal, Reptile
@@ -66,7 +67,7 @@ fun AnimalSelectionScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(M)
                 .background(Color.White)
         ) {
             Text("Animal Type", style = MaterialTheme.typography.bodyLarge)
@@ -77,16 +78,16 @@ fun AnimalSelectionScreen(
                     selected = selectedType == AnimalForm.Mammal,
                     onClick = { selectedType = AnimalForm.Mammal }
                 )
-                Text("Mammal", modifier = Modifier.padding(start = 8.dp))
+                Text("Mammal", modifier = Modifier.padding(start = S))
 
                 RadioButton(
                     selected = selectedType == AnimalForm.Reptile,
                     onClick = { selectedType = AnimalForm.Reptile }
                 )
-                Text("Reptile", modifier = Modifier.padding(start = 8.dp))
+                Text("Reptile", modifier = Modifier.padding(start = S))
             }
 
-            Spacer(modifier = Modifier.padding(vertical = 16.dp))
+            Spacer(modifier = Modifier.padding(vertical = M))
 
             Text("Animal", style = MaterialTheme.typography.bodyLarge)
 
@@ -97,11 +98,11 @@ fun AnimalSelectionScreen(
                         selected = selectedAnimal == animal,
                         onClick = { selectedAnimal = animal }
                     )
-                    Text(animal.name, modifier = Modifier.padding(start = 8.dp))
+                    Text(animal.name, modifier = Modifier.padding(start = S))
                 }
             }
 
-            Spacer(modifier = Modifier.padding(vertical = 16.dp))
+            Spacer(modifier = Modifier.padding(vertical = M))
 
             //для ввода имени животного
             TextField(
@@ -110,7 +111,7 @@ fun AnimalSelectionScreen(
                 label = { Text("Name") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = S)
             )
 
             //для ввода цвета животного
@@ -120,7 +121,7 @@ fun AnimalSelectionScreen(
                 label = { Text("Color") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = S)
             )
 
             Row(
@@ -139,7 +140,7 @@ fun AnimalSelectionScreen(
                     enabled = isFormValid,
                     modifier = Modifier
                         .weight(1f)
-                        .padding(8.dp)
+                        .padding(S)
                 ) {
                     Text("Confirm")
                 }
@@ -147,7 +148,7 @@ fun AnimalSelectionScreen(
                     onClick = { onDismissRequest() },
                     modifier = Modifier
                         .weight(1f)
-                        .padding(8.dp)
+                        .padding(S)
                 ) {
                     Text("Cancel")
                 }

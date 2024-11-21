@@ -15,10 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.example.project2.structure.Animal
 import com.example.project2.structure.Mammal
 import com.example.project2.structure.Reptile
+import com.example.project2.ui.theme.values.S
 
 @Composable
 fun AnimalItem(
@@ -38,7 +38,7 @@ fun AnimalItem(
         modifier = Modifier
             .fillMaxWidth()
             .background(backgroundColor)
-            .padding(8.dp)
+            .padding(S)
             .clickable { onClick() }
     ) {
         Column {
