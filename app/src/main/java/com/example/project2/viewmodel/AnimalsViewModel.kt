@@ -8,7 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.project2.db.AnimalsEntity
 import com.example.project2.db.RoomDB
-import com.example.project2.screens.AnimalForm
+//import com.example.project2.screens.AnimalForm
 import com.example.project2.screens.AnimalType
 
 class AnimalsViewModel(application: Application) : AndroidViewModel(application) {
@@ -17,7 +17,8 @@ class AnimalsViewModel(application: Application) : AndroidViewModel(application)
     private var animalName by mutableStateOf("")
     private var animalColor by mutableStateOf("")
     var animalType by mutableStateOf(AnimalType.Cat)
-    var animalForm by mutableStateOf(AnimalForm.Mammal)
+
+    // var animalForm by mutableStateOf(AnimalForm.Mammal)
     var selectedAnimalIds by mutableStateOf(emptyList<Long>())
 
     init {
@@ -41,7 +42,7 @@ class AnimalsViewModel(application: Application) : AndroidViewModel(application)
                 name = animalName,
                 color = animalColor,
                 type = animalType,
-                form = animalForm
+                // form = animalForm
             )
         )
     }

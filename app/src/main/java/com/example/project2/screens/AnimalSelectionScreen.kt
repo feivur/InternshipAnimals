@@ -31,68 +31,62 @@ import com.example.project2.structure.Triton
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 
-enum class AnimalForm {
-    Mammal, Reptile
-}
+//enum class AnimalForm {
+//    Mammal, Reptile
+//}
 enum class AnimalType {
-    Cat, Dog, Frog, Triton
+    Mammal, Reptile,
+    Cat, Dog, Frog, Triton,
 }
 @Composable
 fun AnimalSelectionScreen(
     onDismissRequest: () -> Unit,
     onSubmit: (Animal?) -> Unit
 ) {
-
-    var selectedType by rememberSaveable { mutableStateOf(AnimalForm.Mammal) }
+    var selectedType by rememberSaveable { mutableStateOf(AnimalType.Mammal) }
     var selectedAnimal by rememberSaveable { mutableStateOf(AnimalType.Cat) }
     var name by rememberSaveable { mutableStateOf("") }
     var color by rememberSaveable { mutableStateOf("") }
     val isFormValid = name.isNotEmpty() && color.isNotEmpty()
 
+    val animalMap = mapOf(
+        AnimalType.Mammal to listOf(AnimalType.Cat, AnimalType.Dog),
+        AnimalType.Reptile to listOf(AnimalType.Frog, AnimalType.Triton)
+    )
+
+    val currentAnimals = remember(selectedType) { animalMap[selectedType] ?: emptyList() }
+
+    // Сбрасываем выбранное животное при смене типа
+    LaunchedEffect(selectedType) {
+        selectedAnimal = currentAnimals.firstOrNull() ?: AnimalType.Cat
+    }
+
     Dialog(
         onDismissRequest = onDismissRequest
     ) {
-        val animalList = remember(selectedType) {
-            if (selectedType == AnimalForm.Mammal) listOf(
-                AnimalType.Cat,
-                AnimalType.Dog
-            ) else listOf(AnimalType.Frog, AnimalType.Triton)
-        }
-
-        //сброс выбранного животного при смене типа
-        LaunchedEffect(selectedType) {
-            selectedAnimal = animalList.first()
-        }
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(M)
                 .background(Color.White)
         ) {
+            // Выбор вида животного
             Text("Animal Type", style = MaterialTheme.typography.bodyLarge)
-
-            //для выбора типа
-            Row {
-                RadioButton(
-                    selected = selectedType == AnimalForm.Mammal,
-                    onClick = { selectedType = AnimalForm.Mammal }
-                )
-                Text("Mammal", modifier = Modifier.padding(start = S))
-
-                RadioButton(
-                    selected = selectedType == AnimalForm.Reptile,
-                    onClick = { selectedType = AnimalForm.Reptile }
-                )
-                Text("Reptile", modifier = Modifier.padding(start = S))
+            animalMap.keys.forEach { type ->
+                Row {
+                    RadioButton(
+                        selected = selectedType == type,
+                        onClick = { selectedType = type }
+                    )
+                    Text(type.name, modifier = Modifier.padding(start = S))
+                }
             }
 
             Spacer(modifier = Modifier.padding(vertical = M))
 
+            // Выбор типа животного в зависимости от вида
             Text("Animal", style = MaterialTheme.typography.bodyLarge)
-
-            // для выбора животного в зависимости от типа
-            animalList.forEach { animal ->
+            currentAnimals.forEach { animal ->
                 Row {
                     RadioButton(
                         selected = selectedAnimal == animal,
@@ -104,7 +98,7 @@ fun AnimalSelectionScreen(
 
             Spacer(modifier = Modifier.padding(vertical = M))
 
-            //для ввода имени животного
+            // Ввод имени животного
             TextField(
                 value = name,
                 onValueChange = { name = it },
@@ -114,7 +108,7 @@ fun AnimalSelectionScreen(
                     .padding(vertical = S)
             )
 
-            //для ввода цвета животного
+            // Ввод цвета животного
             TextField(
                 value = color,
                 onValueChange = { color = it },
@@ -124,18 +118,21 @@ fun AnimalSelectionScreen(
                     .padding(vertical = S)
             )
 
+            // Кнопки подтверждения и отмены
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Button(
                     onClick = {
-                        when (selectedAnimal) {
-                            AnimalType.Cat -> onSubmit(Cat(name, color))
-                            AnimalType.Dog -> onSubmit(Dog(name, color))
-                            AnimalType.Frog -> onSubmit(Frog(name, color))
-                            AnimalType.Triton -> onSubmit(Triton(name, color))
+                        val animal = when (selectedAnimal) {
+                            AnimalType.Cat -> Cat(name, color)
+                            AnimalType.Dog -> Dog(name, color)
+                            AnimalType.Frog -> Frog(name, color)
+                            AnimalType.Triton -> Triton(name, color)
+                            else -> null
                         }
+                        onSubmit(animal)
                     },
                     enabled = isFormValid,
                     modifier = Modifier

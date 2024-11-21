@@ -32,6 +32,14 @@ fun AnimalDetailScreen(
 ) {
     val animal = animalId?.let { animalsViewModel.getAnimalById(it) }
 
+    // Функция для определения вида животного
+    fun getAnimalForm(type: AnimalType): String {
+        return when (type) {
+            AnimalType.Cat, AnimalType.Dog -> "Mammal"
+            AnimalType.Frog, AnimalType.Triton -> "Reptile"
+            else -> "Unknown"
+        }
+    }
 
 
     Scaffold(
@@ -51,43 +59,39 @@ fun AnimalDetailScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(M),
-            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(
-                S
-            ) // todo +
+            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(S)
         ) {
             if (animal != null) {
+                // Вид животного
                 Text(
-                    text = "Animal Type: ${animal.form}",
+                    text = "Animal Form: ${getAnimalForm(animal.type)}",
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        fontSize = text_L.value.sp //
+                        fontSize = text_L.value.sp
                     )
                 )
-            }
-            if (animal != null) {
+                // Тип животного
                 Text(
-                    text = "Animal: ${animal.type}",
+                    text = "Animal Type: ${animal.type}",
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        fontSize = text_L.value.sp //
+                        fontSize = text_L.value.sp
                     )
                 )
-            }
-            if (animal != null) {
+                // Имя
                 Text(
                     text = "Name: ${animal.name}",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontStyle = FontStyle.Italic,
-                        fontSize = text_L.value.sp //
+                        fontSize = text_L.value.sp
                     )
                 )
-            }
-            if (animal != null) {
+                // Цвет
                 Text(
                     text = "Color: ${animal.color}",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontStyle = FontStyle.Italic,
-                        fontSize = text_L.value.sp //
+                        fontSize = text_L.value.sp
                     )
                 )
             }

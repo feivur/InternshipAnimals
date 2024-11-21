@@ -4,7 +4,7 @@ import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.project2.screens.AnimalForm
+//import com.example.project2.screens.AnimalForm
 import com.example.project2.screens.AnimalType
 import com.example.project2.structure.Animal
 import com.example.project2.structure.Cat
@@ -18,8 +18,8 @@ class AnimalsEntity {
     @ColumnInfo(name = "animalId")
     var id: Long = 0
 
-    @ColumnInfo(name = "animalForm")
-    var form: AnimalForm = AnimalForm.Mammal//todo +
+//    @ColumnInfo(name = "animalForm")
+//    var form: AnimalForm = AnimalType.Mammal//todo +
 
     @ColumnInfo(name = "animalType")
     var type: AnimalType = AnimalType.Cat
@@ -32,8 +32,8 @@ class AnimalsEntity {
 
     constructor()
 
-    constructor(form: AnimalForm, type: AnimalType, name: String, color: String) {
-        this.form = form
+    constructor(type: AnimalType, name: String, color: String) {
+        //this.form = form
         this.type = type
         this.name = name
         this.color = color
@@ -45,6 +45,7 @@ class AnimalsEntity {
             AnimalType.Dog -> Dog(name, color)
             AnimalType.Frog -> Frog(name, color)
             AnimalType.Triton -> Triton(name, color)
+            else -> throw IllegalArgumentException("Unsupported animal type")
         }
     }
 }

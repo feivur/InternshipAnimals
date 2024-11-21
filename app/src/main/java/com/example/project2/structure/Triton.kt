@@ -1,7 +1,7 @@
 package com.example.project2.structure
 
 import android.util.Log
-import com.example.project2.screens.AnimalForm
+//import com.example.project2.screens.AnimalForm
 import com.example.project2.screens.AnimalType
 import kotlinx.parcelize.Parcelize
 @Parcelize
@@ -9,7 +9,8 @@ class Triton(override val name: String, override val color: String) : Reptile(na
 
     Speaker {
     override val type: AnimalType = AnimalType.Triton
-    override val form: AnimalForm = AnimalForm.Reptile
+
+    // override val form: AnimalForm = AnimalForm.Reptile
     override fun crawl() {
         Log.d("AnimalAction", "$name triton is crawling")
     }

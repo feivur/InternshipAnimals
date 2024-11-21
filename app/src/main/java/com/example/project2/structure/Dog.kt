@@ -1,13 +1,14 @@
 package com.example.project2.structure
 
 import android.util.Log
-import com.example.project2.screens.AnimalForm
+//import com.example.project2.screens.AnimalForm
 import com.example.project2.screens.AnimalType
 import kotlinx.parcelize.Parcelize
 @Parcelize
 class Dog(override val name: String, override val color: String) : Mammal(name, color), Speaker {
     override val type: AnimalType = AnimalType.Dog
-    override val form: AnimalForm = AnimalForm.Mammal
+
+    //   override val form: AnimalForm = AnimalForm.Mammal
     override fun run() {
         Log.d("AnimalAction", "$name dog is running")
     }
