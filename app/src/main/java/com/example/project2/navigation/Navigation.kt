@@ -1,8 +1,6 @@
 package com.example.project2.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -17,8 +15,8 @@ fun AppNavigation(
     navController: NavHostController,
     animalsViewModel: AnimalsViewModel
 ) {
-    val animals by animalsViewModel.animalList.observeAsState(emptyList())//todo убрать
-//todo в навигации не место внешней логике. Она лишь роутер экранов
+    //val animals by animalsViewModel.animalList.observeAsState(emptyList())//todo убрать  +
+
     NavHost(navController = navController, startDestination = "zoo_screen") {
         composable("zoo_screen") {
             ZooScreen(
@@ -31,11 +29,11 @@ fun AppNavigation(
             arguments = listOf(navArgument("animalId") { type = NavType.LongType })
         ) { backStackEntry ->
             val animalId = backStackEntry.arguments?.getLong("animalId")
-            val animal = animals.find { it.id == animalId }
-
-            animal?.let {
-                AnimalDetailScreen(navController = navController, animal = it)
-            }
+            AnimalDetailScreen(
+                navController = navController,
+                animalId = animalId,
+                animalsViewModel = animalsViewModel
+            )
         }
     }
 }

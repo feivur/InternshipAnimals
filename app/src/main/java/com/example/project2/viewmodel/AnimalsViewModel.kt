@@ -51,4 +51,9 @@ class AnimalsViewModel(application: Application) : AndroidViewModel(application)
         repository.deleteAnimals(selectedAnimalIds)
         selectedAnimalIds = emptyList()
     }
+
+    ///
+    fun getAnimalById(id: Long): AnimalsEntity? {
+        return animalList.value?.find { it.id == id }
+    }
 }
