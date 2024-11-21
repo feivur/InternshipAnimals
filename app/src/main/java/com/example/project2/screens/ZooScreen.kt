@@ -24,6 +24,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.project2.db.AnimalsEntity
+import com.example.project2.ui.theme.values.M
+import com.example.project2.ui.theme.values.S
+import com.example.project2.ui.theme.values.XXL
 import com.example.project2.viewmodel.AnimalsViewModel
 
 @Composable
@@ -36,7 +39,7 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(M)
     ) {
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(animals) { animalEntity ->
@@ -65,10 +68,10 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
 
         //кнопки управления
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(M),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 40.dp)
+                .padding(horizontal = XXL)
         ) {
             if (!deleteMode) {
                 //кнопка добавления животного
@@ -103,7 +106,7 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp)
+                    .padding(top = S)
             ) {
                 Text("Delete", color = Color.White)
             }

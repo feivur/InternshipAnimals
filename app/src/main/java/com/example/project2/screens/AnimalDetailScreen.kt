@@ -14,12 +14,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.project2.db.AnimalsEntity
+import com.example.project2.ui.theme.values.M
+import com.example.project2.ui.theme.values.S
+import com.example.project2.ui.theme.values.text_L
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,37 +42,37 @@ fun AnimalDetailScreen(navController: NavController, animal: AnimalsEntity) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(dimensionResource(id = com.example.project2.R.dimen.size_m)),
+                .padding(M),
             verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(
-                dimensionResource(id = com.example.project2.R.dimen.size_s)
+                S
             ) // todo +
         ) {
             Text(
                 text = "Animal Type: ${animal.form}",
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold,
-                    fontSize = dimensionResource(id = com.example.project2.R.dimen.text_size_l).value.sp //
+                    fontSize = text_L.value.sp //
                 )
             )
             Text(
                 text = "Animal: ${animal.type}",
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold,
-                    fontSize = dimensionResource(id = com.example.project2.R.dimen.text_size_l).value.sp //
+                    fontSize = text_L.value.sp //
                 )
             )
             Text(
                 text = "Name: ${animal.name}",
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontStyle = FontStyle.Italic,
-                    fontSize = dimensionResource(id = com.example.project2.R.dimen.text_size_l).value.sp //
+                    fontSize = text_L.value.sp //
                 )
             )
             Text(
                 text = "Color: ${animal.color}",
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontStyle = FontStyle.Italic,
-                    fontSize = dimensionResource(id = com.example.project2.R.dimen.text_size_l).value.sp //
+                    fontSize = text_L.value.sp //
                 )
             )
         }
