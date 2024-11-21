@@ -119,8 +119,6 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
                     animalsViewModel.changeName(animal?.name ?: "")
                     animalsViewModel.changeColor(animal?.color ?: "")
                     animalsViewModel.animalType = animal?.type ?: AnimalType.Cat
-                    animalsViewModel.animalForm =
-                        animal?.form ?: AnimalForm.Mammal
                     animalsViewModel.addAnimal() //добавляем животное в БД
                     showAnimalSelectionDialog = false
                 },
