@@ -18,14 +18,22 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.project2.db.AnimalsEntity
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 import com.example.project2.ui.theme.values.text_L
+import com.example.project2.viewmodel.AnimalsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AnimalDetailScreen(navController: NavController, animal: AnimalsEntity) {
+fun AnimalDetailScreen(
+    navController: NavController,
+    animalId: Long?,
+    animalsViewModel: AnimalsViewModel
+) {
+    val animal = animalId?.let { animalsViewModel.getAnimalById(it) }
+
+
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -47,34 +55,42 @@ fun AnimalDetailScreen(navController: NavController, animal: AnimalsEntity) {
                 S
             ) // todo +
         ) {
-            Text(
-                text = "Animal Type: ${animal.form}",
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = text_L.value.sp //
+            if (animal != null) {
+                Text(
+                    text = "Animal Type: ${animal.form}",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = text_L.value.sp //
+                    )
                 )
-            )
-            Text(
-                text = "Animal: ${animal.type}",
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = text_L.value.sp //
+            }
+            if (animal != null) {
+                Text(
+                    text = "Animal: ${animal.type}",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = text_L.value.sp //
+                    )
                 )
-            )
-            Text(
-                text = "Name: ${animal.name}",
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontStyle = FontStyle.Italic,
-                    fontSize = text_L.value.sp //
+            }
+            if (animal != null) {
+                Text(
+                    text = "Name: ${animal.name}",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontStyle = FontStyle.Italic,
+                        fontSize = text_L.value.sp //
+                    )
                 )
-            )
-            Text(
-                text = "Color: ${animal.color}",
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontStyle = FontStyle.Italic,
-                    fontSize = text_L.value.sp //
+            }
+            if (animal != null) {
+                Text(
+                    text = "Color: ${animal.color}",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontStyle = FontStyle.Italic,
+                        fontSize = text_L.value.sp //
+                    )
                 )
-            )
+            }
         }
     }
 }

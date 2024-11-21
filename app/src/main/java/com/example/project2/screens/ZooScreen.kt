@@ -35,7 +35,7 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
     var deleteMode by rememberSaveable { mutableStateOf(false) }
     var selectedAnimals by rememberSaveable { mutableStateOf(setOf<AnimalsEntity>()) }
     var showAnimalSelectionDialog by rememberSaveable { mutableStateOf(false) }
-
+    //
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -59,7 +59,7 @@ fun AnimalSelectionScreen(
             ) else listOf(AnimalType.Frog, AnimalType.Triton)
         }
 
-        //сборс выбранного животного при смене типа
+        //сброс выбранного животного при смене типа
         LaunchedEffect(selectedType) {
             selectedAnimal = animalList.first()
         }
