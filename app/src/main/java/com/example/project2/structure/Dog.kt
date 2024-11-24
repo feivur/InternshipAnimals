@@ -5,7 +5,8 @@ import android.util.Log
 import com.example.project2.screens.AnimalType
 import kotlinx.parcelize.Parcelize
 @Parcelize
-class Dog(override val name: String, override val color: String) : Mammal(name, color), Speaker {
+class Dog(override val name: String, override val color: String, override val id: Long) :
+    Mammal(name, color), Speaker {
     override val type: AnimalType = AnimalType.Dog
 
     //   override val form: AnimalForm = AnimalForm.Mammal

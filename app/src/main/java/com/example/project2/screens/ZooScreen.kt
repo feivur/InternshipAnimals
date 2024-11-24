@@ -3,10 +3,8 @@ package com.example.project2.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,69 +12,65 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.project2.db.AnimalsEntity
+import com.example.project2.App
+import com.example.project2.db.AnimalsDao
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 import com.example.project2.ui.theme.values.XXL
-import com.example.project2.viewmodel.AnimalsViewModel
+import com.example.project2.viewmodel.AnimalViewModel
+
 
 @Composable
-fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) {
-    val animals by animalsViewModel.animalList.observeAsState(emptyList())
-    var deleteMode by rememberSaveable { mutableStateOf(false) }
-    var selectedAnimals by rememberSaveable { mutableStateOf(setOf<AnimalsEntity>()) }
-    var showAnimalSelectionDialog by rememberSaveable { mutableStateOf(false) }
-    //
+fun ZooScreen(
+    navController: NavController//,
+    //animalViewModel: AnimalViewModel//???
+) {
+
+    val animalsDao: AnimalsDao = App.animalsDao!!
+
+    val animalViewModel: AnimalViewModel = remember { AnimalViewModel(animalsDao) }
+    // val animalViewModel: AnimalViewModel = viewModel() //???
+    val state by animalViewModel.state.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(M)
     ) {
         LazyColumn(modifier = Modifier.weight(1f)) {
-            items(animals) { animalEntity ->
-                val animal = animalEntity.toAnimal()
-
+            items(state.animals) { animal ->
                 AnimalItem(
                     animal = animal,
                     onClick = {
-                        if (!deleteMode) {
-                            navController.navigate("animal_detail/${animalEntity.id}")
+                        if (!state.deleteMode) {
+                            navController.navigate("animal_detail/${animal.id}")
                         }
                     },
                     onCheckedChange = { isChecked ->
-                        selectedAnimals = if (isChecked) {
-                            selectedAnimals + animalEntity
-                        } else {
-                            selectedAnimals - animalEntity
-                        }
+                        animalViewModel.selectAnimal(animal.id, isChecked)
                     },
-                    isSelected = selectedAnimals.contains(animalEntity),
-                    deleteMode = deleteMode
+                    isSelected = state.selectedAnimalIds.contains(animal.id),
+                    deleteMode = state.deleteMode
                 )
-                Spacer(modifier = Modifier.height(2.dp))
             }
         }
 
-        //кнопки управления
+        // Кнопки управления
         Row(
             horizontalArrangement = Arrangement.spacedBy(M),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = XXL)
         ) {
-            if (!deleteMode) {
-                //кнопка добавления животного
+            if (!state.deleteMode) {
                 Button(
-                    onClick = { showAnimalSelectionDialog = true },
+                    onClick = { animalViewModel.showAnimalSelectionDialog(true) },
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
                 ) {
@@ -84,24 +78,21 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
                 }
             }
 
-            //кнопка для режима удаления
             Button(
-                onClick = { deleteMode = !deleteMode },
+                onClick = { animalViewModel.toggleDeleteMode() },
                 modifier = Modifier.weight(1f),
-                colors = ButtonDefaults.buttonColors(containerColor = if (deleteMode) Color.Gray else Color.Red)
+                colors = ButtonDefaults.buttonColors(containerColor = if (state.deleteMode) Color.Gray else Color.Red)
             ) {
-                Text(if (deleteMode) "Cancel" else "Delete Animals", color = Color.White)
+                Text(if (state.deleteMode) "Cancel" else "Delete Animals", color = Color.White)
             }
         }
 
-        //кнопка для удаления выбранных животных
-        if (deleteMode) {
+        // Кнопка подтверждения удаления
+        if (state.deleteMode) {
             Button(
                 onClick = {
-                    animalsViewModel.selectedAnimalIds = selectedAnimals.map { it.id }
-                    animalsViewModel.deleteSelectedAnimals()
-                    deleteMode = false
-                    selectedAnimals = emptySet()
+                    animalViewModel.deleteSelectedAnimals(state.selectedAnimalIds.toList())
+                    animalViewModel.clearSelectedAnimals()
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                 modifier = Modifier
@@ -112,19 +103,18 @@ fun ZooScreen(navController: NavController, animalsViewModel: AnimalsViewModel) 
             }
         }
 
-        //для добавления животного
-        if (showAnimalSelectionDialog) {
+        // Диалог добавления животного
+        if (state.showAnimalSelectionDialog) {
             AnimalSelectionScreen(
                 onSubmit = { animal ->
-                    animalsViewModel.changeName(animal?.name ?: "")
-                    animalsViewModel.changeColor(animal?.color ?: "")
-                    animalsViewModel.animalType = animal?.type ?: AnimalType.Cat
-                    animalsViewModel.addAnimal() //добавляем животное в БД
-                    showAnimalSelectionDialog = false
+                    if (animal != null) {
+                        animalViewModel.addAnimal(animal) // Добавление животного
+                    }
+                    animalViewModel.showAnimalSelectionDialog(false) // Закрытие диалога
                 },
-                onDismissRequest = { showAnimalSelectionDialog = false }
+                onDismissRequest = { animalViewModel.showAnimalSelectionDialog(false) },
+                animalViewModel = animalViewModel
             )
         }
     }
 }
-

@@ -8,22 +8,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.project2.screens.AnimalDetailScreen
 import com.example.project2.screens.ZooScreen
-import com.example.project2.viewmodel.AnimalsViewModel
+
+//import com.example.project2.viewmodel.AnimalViewModel
 
 @Composable
-fun AppNavigation(
-    navController: NavHostController,
-    animalsViewModel: AnimalsViewModel
-) {
-    //val animals by animalsViewModel.animalList.observeAsState(emptyList())//todo убрать  +
-
+fun AppNavigation(navController: NavHostController) {//, animalViewModel: AnimalViewModel) {//?
     NavHost(navController = navController, startDestination = "zoo_screen") {
         composable("zoo_screen") {
-            ZooScreen(
-                navController = navController,
-                animalsViewModel = animalsViewModel
-            )
-        }// что будет, если animalName повторится у другого итема?
+            ZooScreen(navController = navController)//, animalViewModel = animalViewModel)//?
+        }
         composable(
             "animal_detail/{animalId}",
             arguments = listOf(navArgument("animalId") { type = NavType.LongType })
@@ -31,10 +24,8 @@ fun AppNavigation(
             val animalId = backStackEntry.arguments?.getLong("animalId")
             AnimalDetailScreen(
                 navController = navController,
-                animalId = animalId,
-                animalsViewModel = animalsViewModel
+                animalId = animalId
             )
         }
     }
 }
-
