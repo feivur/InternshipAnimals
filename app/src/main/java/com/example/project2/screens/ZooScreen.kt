@@ -34,8 +34,8 @@ fun ZooScreen(
 
     val animalsDao: AnimalsDao = App.animalsDao!!
 
-    val animalViewModel: AnimalViewModel = remember { AnimalViewModel(animalsDao) }
-    // val animalViewModel: AnimalViewModel = viewModel() //???
+    val animalViewModel: AnimalViewModel = remember { AnimalViewModel(animalsDao) }//LiveData
+    // val animalViewModel: AnimalViewModel = viewModel() //Flow
     val state by animalViewModel.state.collectAsState()
 
     Column(
