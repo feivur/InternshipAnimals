@@ -14,12 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import com.example.project2.App
-import com.example.project2.db.AnimalsDao
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 import com.example.project2.ui.theme.values.XXL
@@ -28,13 +25,13 @@ import com.example.project2.viewmodel.AnimalViewModel
 
 @Composable
 fun ZooScreen(
-    navController: NavController//,
-    //animalViewModel: AnimalViewModel//???
+    navController: NavController,
+    animalViewModel: AnimalViewModel//???
 ) {
 
-    val animalsDao: AnimalsDao = App.animalsDao!!
+    //val animalsDao: AnimalsDao = App.animalsDao!!
 
-    val animalViewModel: AnimalViewModel = remember { AnimalViewModel(animalsDao) }//LiveData
+    // val animalViewModel: AnimalViewModel = remember { AnimalViewModel(animalsDao) }//LiveData
     // val animalViewModel: AnimalViewModel = viewModel() //Flow
     val state by animalViewModel.state.collectAsState()
 
