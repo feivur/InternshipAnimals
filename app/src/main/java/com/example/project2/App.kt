@@ -9,16 +9,19 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        animalsDao = Room.databaseBuilder(
+        // Инициализация бд
+        val db = Room.databaseBuilder(
             applicationContext,
             RoomDB::class.java, "animals_db"
         )
             .fallbackToDestructiveMigration()
-            .build().animalsDao()
+            .build()
+        // Сохраняем ссылку на DAO
+        animalsDao = db.animalsDao()
     }
 
     companion object {
-        //var instaApp
+        // Ссылка на DAO
         var animalsDao: AnimalsDao? = null
             private set
     }

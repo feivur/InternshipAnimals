@@ -4,27 +4,25 @@ package com.example.project2
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.navigation.compose.rememberNavController
 import com.example.project2.navigation.AppNavigation
-import com.example.project2.viewmodel.AnimalsViewModel
-import com.example.project2.viewmodel.AnimalsViewModelFactory
-
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val viewModelFactory = AnimalsViewModelFactory(application)
-        val animalsViewModel: AnimalsViewModel by viewModels { viewModelFactory }
+        // Проверяем, что animalsDao не null
+//        val dao = animalsDao
+//        if (dao == null) {
+//            throw IllegalStateException("DAO is not initialized yet. Ensure App is initialized first.")
+//        }
 
         setContent {
             val navController = rememberNavController()
-            AppNavigation(
-                animalsViewModel = animalsViewModel,
-                navController = navController
-            )
+
+            // val animalViewModel: AnimalViewModel = viewModel { AnimalViewModel(dao) }
+
+            AppNavigation(navController = navController)//, animalViewModel = animalViewModel)//???
         }
     }
 }

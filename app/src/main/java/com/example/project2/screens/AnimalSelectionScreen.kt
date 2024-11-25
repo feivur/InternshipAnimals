@@ -15,11 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.Dialog
@@ -30,40 +28,36 @@ import com.example.project2.structure.Frog
 import com.example.project2.structure.Triton
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
+import com.example.project2.viewmodel.AnimalViewModel
 
-//enum class AnimalForm {
-//    Mammal, Reptile
-//}
 enum class AnimalType {
     Mammal, Reptile,
     Cat, Dog, Frog, Triton,
 }
+
 @Composable
 fun AnimalSelectionScreen(
     onDismissRequest: () -> Unit,
-    onSubmit: (Animal?) -> Unit
+    onSubmit: (Animal?) -> Unit,
+    animalViewModel: AnimalViewModel
 ) {
-    var selectedType by rememberSaveable { mutableStateOf(AnimalType.Mammal) }
-    var selectedAnimal by rememberSaveable { mutableStateOf(AnimalType.Cat) }
-    var name by rememberSaveable { mutableStateOf("") }
-    var color by rememberSaveable { mutableStateOf("") }
-    val isFormValid = name.isNotEmpty() && color.isNotEmpty()
+    val state by animalViewModel.state.collectAsState()
+    val isFormValid = state.name.isNotEmpty() && state.color.isNotEmpty()
 
     val animalMap = mapOf(
         AnimalType.Mammal to listOf(AnimalType.Cat, AnimalType.Dog),
         AnimalType.Reptile to listOf(AnimalType.Frog, AnimalType.Triton)
     )
 
-    val currentAnimals = remember(selectedType) { animalMap[selectedType] ?: emptyList() }
+    val currentAnimals =
+        remember(state.selectedType) { animalMap[state.selectedType] ?: emptyList() }
 
     // Сбрасываем выбранное животное при смене типа
-    LaunchedEffect(selectedType) {
-        selectedAnimal = currentAnimals.firstOrNull() ?: AnimalType.Cat
+    LaunchedEffect(state.selectedType) {
+        animalViewModel.setSelectedAnimal(currentAnimals.firstOrNull() ?: AnimalType.Cat)
     }
 
-    Dialog(
-        onDismissRequest = onDismissRequest
-    ) {
+    Dialog(onDismissRequest = onDismissRequest) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -75,8 +69,8 @@ fun AnimalSelectionScreen(
             animalMap.keys.forEach { type ->
                 Row {
                     RadioButton(
-                        selected = selectedType == type,
-                        onClick = { selectedType = type }
+                        selected = state.selectedType == type,
+                        onClick = { animalViewModel.setSelectedType(type) }
                     )
                     Text(type.name, modifier = Modifier.padding(start = S))
                 }
@@ -89,8 +83,8 @@ fun AnimalSelectionScreen(
             currentAnimals.forEach { animal ->
                 Row {
                     RadioButton(
-                        selected = selectedAnimal == animal,
-                        onClick = { selectedAnimal = animal }
+                        selected = state.selectedAnimal == animal,
+                        onClick = { animalViewModel.setSelectedAnimal(animal) }
                     )
                     Text(animal.name, modifier = Modifier.padding(start = S))
                 }
@@ -100,8 +94,8 @@ fun AnimalSelectionScreen(
 
             // Ввод имени животного
             TextField(
-                value = name,
-                onValueChange = { name = it },
+                value = state.name,
+                onValueChange = { animalViewModel.setName(it) },
                 label = { Text("Name") },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -110,8 +104,8 @@ fun AnimalSelectionScreen(
 
             // Ввод цвета животного
             TextField(
-                value = color,
-                onValueChange = { color = it },
+                value = state.color,
+                onValueChange = { animalViewModel.setColor(it) },
                 label = { Text("Color") },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -125,11 +119,30 @@ fun AnimalSelectionScreen(
             ) {
                 Button(
                     onClick = {
-                        val animal = when (selectedAnimal) {
-                            AnimalType.Cat -> Cat(name, color)
-                            AnimalType.Dog -> Dog(name, color)
-                            AnimalType.Frog -> Frog(name, color)
-                            AnimalType.Triton -> Triton(name, color)
+                        val animal = when (state.selectedAnimal) {
+                            AnimalType.Cat -> Cat(
+                                id = System.currentTimeMillis(),
+                                name = state.name,
+                                color = state.color
+                            )
+
+                            AnimalType.Dog -> Dog(
+                                id = System.currentTimeMillis(),
+                                name = state.name,
+                                color = state.color
+                            )
+
+                            AnimalType.Frog -> Frog(
+                                id = System.currentTimeMillis(),
+                                name = state.name,
+                                color = state.color
+                            )
+
+                            AnimalType.Triton -> Triton(
+                                id = System.currentTimeMillis(),
+                                name = state.name,
+                                color = state.color
+                            )
                             else -> null
                         }
                         onSubmit(animal)

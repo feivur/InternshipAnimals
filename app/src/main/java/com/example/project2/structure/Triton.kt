@@ -5,7 +5,8 @@ import android.util.Log
 import com.example.project2.screens.AnimalType
 import kotlinx.parcelize.Parcelize
 @Parcelize
-class Triton(override val name: String, override val color: String) : Reptile(name, color),
+class Triton(override val name: String, override val color: String, override val id: Long) :
+    Reptile(name, color),
 
     Speaker {
     override val type: AnimalType = AnimalType.Triton
