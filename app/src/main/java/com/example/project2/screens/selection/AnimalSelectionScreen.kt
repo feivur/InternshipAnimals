@@ -1,4 +1,4 @@
-package com.example.project2.screens
+package com.example.project2.screens.selection
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +28,7 @@ import com.example.project2.structure.Frog
 import com.example.project2.structure.Triton
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
-import com.example.project2.viewmodel.AnimalViewModel
+import com.example.project2.screens.list.AnimalsViewModel
 
 enum class AnimalType {
     Mammal, Reptile,
@@ -39,7 +39,7 @@ enum class AnimalType {
 fun AnimalSelectionScreen(
     onDismissRequest: () -> Unit,
     onSubmit: (Animal?) -> Unit,
-    animalViewModel: AnimalViewModel
+    animalViewModel: AnimalsViewModel
 ) {
     val state by animalViewModel.state.collectAsState()
     val isFormValid = state.name.isNotEmpty() && state.color.isNotEmpty()

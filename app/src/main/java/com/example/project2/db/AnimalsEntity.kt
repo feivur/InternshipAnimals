@@ -3,7 +3,7 @@ package com.example.project2.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.project2.screens.AnimalType
+import com.example.project2.screens.selection.AnimalType
 import com.example.project2.structure.Animal
 import com.example.project2.structure.Cat
 import com.example.project2.structure.Dog

@@ -1,4 +1,4 @@
-package com.example.project2.screens
+package com.example.project2.screens.details
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,22 +19,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 import com.example.project2.ui.theme.values.text_L
 import com.example.project2.ui.theme.values.text_M
-import com.example.project2.viewmodel.AnimalViewModel
+import com.example.project2.screens.list.AnimalsViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimalDetailScreen(
     navController: NavController,
-    animalId: Long?,
-    animalViewModel: AnimalViewModel
+    animalId: Long?
 ) {
+
+    val animalViewModel: AnimalsViewModel = viewModel()
+
     val state by animalViewModel.state.collectAsState()
+
     val animal = animalId?.let { id ->
         state.animals.find { it.id == id }
     }
