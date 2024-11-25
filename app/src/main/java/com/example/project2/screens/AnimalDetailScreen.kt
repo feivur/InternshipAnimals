@@ -19,12 +19,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 import com.example.project2.ui.theme.values.text_L
+import com.example.project2.ui.theme.values.text_M
 import com.example.project2.viewmodel.AnimalViewModel
 
 
@@ -32,12 +31,10 @@ import com.example.project2.viewmodel.AnimalViewModel
 @Composable
 fun AnimalDetailScreen(
     navController: NavController,
-    animalId: Long?
+    animalId: Long?,
+    animalViewModel: AnimalViewModel
 ) {
-    val animalViewModel: AnimalViewModel = viewModel()
     val state by animalViewModel.state.collectAsState()
-
-    // Находим животное по переданному ID
     val animal = animalId?.let { id ->
         state.animals.find { it.id == id }
     }
@@ -63,31 +60,30 @@ fun AnimalDetailScreen(
         ) {
             if (animal != null) {
                 Text(
-                    text = "Animal Form: ${animal.type}",
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = text_L.value.sp
-                    )
-                )
-                Text(
                     text = "Animal Type: ${animal.type}",
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        fontSize = text_L.value.sp
+                        fontSize = text_L
                     )
                 )
                 Text(
                     text = "Name: ${animal.name}",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontStyle = FontStyle.Italic,
-                        fontSize = text_L.value.sp
+                        fontSize = text_M
                     )
                 )
                 Text(
                     text = "Color: ${animal.color}",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontStyle = FontStyle.Italic,
-                        fontSize = text_L.value.sp
+                        fontSize = text_M
+                    )
+                )
+                Text(
+                    text = "Description: ${animal.describe()}",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontSize = text_M
                     )
                 )
             } else {
@@ -95,7 +91,7 @@ fun AnimalDetailScreen(
                     text = "Animal not found.",
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        fontSize = text_L.value.sp
+                        fontSize = text_L
                     )
                 )
             }

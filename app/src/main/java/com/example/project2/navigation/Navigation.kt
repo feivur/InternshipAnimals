@@ -24,7 +24,8 @@ fun AppNavigation(navController: NavHostController, animalViewModel: AnimalViewM
             val animalId = backStackEntry.arguments?.getLong("animalId")
             AnimalDetailScreen(
                 navController = navController,
-                animalId = animalId
+                animalId = animalId,
+                animalViewModel = animalViewModel
             )
         }
     }
