@@ -1,7 +1,7 @@
 package com.example.project2.structure
 
 import android.os.Parcelable//для передачи между компонентами приложения
-import com.example.project2.screens.AnimalType
+import com.example.project2.screens.selection.AnimalType
 
 interface Animal : Parcelable, Speaker {
     val id: Long // Новый ID

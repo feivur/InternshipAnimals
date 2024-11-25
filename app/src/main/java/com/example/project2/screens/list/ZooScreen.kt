@@ -1,4 +1,4 @@
-package com.example.project2.screens
+package com.example.project2.screens.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,23 +19,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.project2.screens.selection.AnimalSelectionScreen
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 import com.example.project2.ui.theme.values.XXL
-import com.example.project2.viewmodel.AnimalViewModel
 
 
 @Composable
 fun ZooScreen(
     navController: NavController,
-    animalViewModel: AnimalViewModel//???
 ) {
+    val animalViewModel: AnimalsViewModel = viewModel()
 
-    //val animalsDao: AnimalsDao = App.animalsDao!!
-
-    // val animalViewModel: AnimalViewModel = remember { AnimalViewModel(animalsDao) }//LiveData
-    // val animalViewModel: AnimalViewModel = viewModel() //Flow
     val state by animalViewModel.state.collectAsState()
 
     Column(

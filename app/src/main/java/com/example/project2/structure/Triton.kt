@@ -2,7 +2,7 @@ package com.example.project2.structure
 
 import android.util.Log
 //import com.example.project2.screens.AnimalForm
-import com.example.project2.screens.AnimalType
+import com.example.project2.screens.selection.AnimalType
 import kotlinx.parcelize.Parcelize
 @Parcelize
 class Triton(override val name: String, override val color: String, override val id: Long) :

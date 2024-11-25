@@ -1,9 +1,9 @@
-package com.example.project2.viewmodel
+package com.example.project2.screens.list
 
-import com.example.project2.screens.AnimalType
+import com.example.project2.screens.selection.AnimalType
 import com.example.project2.structure.Animal
 
-data class AnimalState(
+data class AnimalsState(
     val animals: List<Animal> = emptyList(),/////
     val isLoading: Boolean = false,
     val selectedAnimalIds: Set<Long> = emptySet(),

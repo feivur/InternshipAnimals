@@ -1,7 +1,7 @@
 package com.example.project2.structure
 
 import android.util.Log
-import com.example.project2.screens.AnimalType
+import com.example.project2.screens.selection.AnimalType
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

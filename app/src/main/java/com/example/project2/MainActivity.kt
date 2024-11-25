@@ -8,7 +8,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.project2.App.Companion.animalsDao
 import com.example.project2.navigation.AppNavigation
-import com.example.project2.viewmodel.AnimalViewModel
+import com.example.project2.screens.list.AnimalsViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
-            val animalViewModel: AnimalViewModel = viewModel { AnimalViewModel(dao) }
+            val animalViewModel: AnimalsViewModel = viewModel { AnimalsViewModel() }
 
             AppNavigation(navController = navController, animalViewModel = animalViewModel)//???
         }

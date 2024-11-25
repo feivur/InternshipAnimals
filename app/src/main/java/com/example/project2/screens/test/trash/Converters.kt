@@ -2,7 +2,7 @@
 //
 //import androidx.room.TypeConverter
 //import com.example.project2.screens.AnimalForm
-//import com.example.project2.screens.AnimalType
+//import com.example.project2.screens.selection.AnimalType
 //
 //class Converters {
 //    @TypeConverter

@@ -1,18 +1,21 @@
-package com.example.project2.viewmodel
+package com.example.project2.screens.list
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.project2.db.AnimalsDao
+import com.example.project2.App
 import com.example.project2.db.AnimalsEntity
-import com.example.project2.screens.AnimalType
+import com.example.project2.screens.selection.AnimalType
 import com.example.project2.structure.Animal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-class AnimalViewModel(private val animalsDao: AnimalsDao) : ViewModel() {
-    private val _state = MutableStateFlow(AnimalState())
-    val state: StateFlow<AnimalState> = _state
+class AnimalsViewModel() : ViewModel() {
+
+    private val animalsDao = App.animalsDao!!
+
+    private val _state = MutableStateFlow(AnimalsState())
+    val state: StateFlow<AnimalsState> = _state
 
     init {
         loadAnimals()
