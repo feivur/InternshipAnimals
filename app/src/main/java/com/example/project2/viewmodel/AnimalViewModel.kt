@@ -10,11 +10,9 @@ import com.example.project2.structure.Animal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-
 class AnimalViewModel(private val animalsDao: AnimalsDao) : ViewModel() {
-
     private val _state = MutableStateFlow(AnimalState())
-    val state: StateFlow<AnimalState> get() = _state
+    val state: StateFlow<AnimalState> = _state
 
     init {
         loadAnimals()
@@ -22,13 +20,24 @@ class AnimalViewModel(private val animalsDao: AnimalsDao) : ViewModel() {
 
     private fun loadAnimals() {
         viewModelScope.launch {
-            val entities = animalsDao.getAllAnimals().value.orEmpty()
-            Log.d("AnimalViewModel", "Loaded animals: $entities")
-            _state.value = _state.value.copy(
-                animals = entities.map { it.toAnimal() }
-            )
-        }//
+            animalsDao.getAllAnimals().collect { entities ->
+                _state.value = _state.value.copy(
+                    animals = entities.map { it.toAnimal() }
+                )
+            }
+        }
     }
+
+
+//    private fun loadAnimals() {
+//        viewModelScope.launch {
+//            val entities = animalsDao.getAllAnimals().value.orEmpty()
+//            Log.d("AnimalViewModel", "Loaded animals: $entities")
+//            _state.value = _state.value.copy(
+//                animals = entities.map { it.toAnimal() }
+//            )
+//        }//
+//    }
 
     fun addAnimal(animal: Animal) {
         viewModelScope.launch {

@@ -1,9 +1,9 @@
 package com.example.project2.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AnimalsDao {
@@ -14,7 +14,7 @@ interface AnimalsDao {
     suspend fun deleteAnimals(ids: List<Long>)
 
     @Query("SELECT * FROM animals")
-    fun getAllAnimals(): LiveData<List<AnimalsEntity>>//LiveData //Flow
+    fun getAllAnimals(): Flow<List<AnimalsEntity>>//LiveData //Flow
 
     @Query("DELETE FROM animals WHERE animalId = :id")
     fun deleteAnimal(id: Int)

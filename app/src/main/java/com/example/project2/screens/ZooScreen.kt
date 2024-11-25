@@ -3,8 +3,10 @@ package com.example.project2.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,12 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.project2.App
-import com.example.project2.db.AnimalsDao
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 import com.example.project2.ui.theme.values.XXL
@@ -28,13 +28,13 @@ import com.example.project2.viewmodel.AnimalViewModel
 
 @Composable
 fun ZooScreen(
-    navController: NavController//,
-    //animalViewModel: AnimalViewModel//???
+    navController: NavController,
+    animalViewModel: AnimalViewModel//???
 ) {
 
-    val animalsDao: AnimalsDao = App.animalsDao!!
+    //val animalsDao: AnimalsDao = App.animalsDao!!
 
-    val animalViewModel: AnimalViewModel = remember { AnimalViewModel(animalsDao) }//LiveData
+    // val animalViewModel: AnimalViewModel = remember { AnimalViewModel(animalsDao) }//LiveData
     // val animalViewModel: AnimalViewModel = viewModel() //Flow
     val state by animalViewModel.state.collectAsState()
 
@@ -58,6 +58,7 @@ fun ZooScreen(
                     isSelected = state.selectedAnimalIds.contains(animal.id),
                     deleteMode = state.deleteMode
                 )
+                Spacer(modifier = Modifier.height(2.dp))
             }
         }
 
