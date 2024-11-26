@@ -8,11 +8,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.project2.screens.details.AnimalDetailScreen
 import com.example.project2.screens.list.ZooScreen
-import com.example.project2.screens.list.AnimalsViewModel
+import com.example.project2.screens.selection.AnimalSelectionScreen
 
-//import com.example.project2.viewmodel.AnimalViewModel
+
 @Composable
-fun AppNavigation(navController: NavHostController, animalViewModel: AnimalsViewModel) {
+fun AppNavigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "zoo_screen") {
         composable("zoo_screen") {
             ZooScreen(navController = navController)
@@ -27,5 +27,17 @@ fun AppNavigation(navController: NavHostController, animalViewModel: AnimalsView
                 animalId = animalId
             )
         }
+        composable("animal_selection") {
+            AnimalSelectionScreen(
+                onDismissRequest = { navController.popBackStack() },
+                onSubmit = { animal ->
+                    animal?.let {
+                        navController.previousBackStackEntry?.savedStateHandle?.set("newAnimal", it)
+                    }
+                    navController.popBackStack()
+                }
+            )
+        }
+
     }
 }

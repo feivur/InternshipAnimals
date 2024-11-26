@@ -10,6 +10,7 @@ import com.example.project2.structure.Animal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+
 class AnimalsViewModel() : ViewModel() {
 
     private val animalsDao = App.animalsDao!!
@@ -31,17 +32,6 @@ class AnimalsViewModel() : ViewModel() {
         }
     }
 
-
-//    private fun loadAnimals() {
-//        viewModelScope.launch {
-//            val entities = animalsDao.getAllAnimals().value.orEmpty()
-//            Log.d("AnimalViewModel", "Loaded animals: $entities")
-//            _state.value = _state.value.copy(
-//                animals = entities.map { it.toAnimal() }
-//            )
-//        }//
-//    }
-
     fun addAnimal(animal: Animal) {
         viewModelScope.launch {
             val entity = AnimalsEntity(
@@ -50,28 +40,12 @@ class AnimalsViewModel() : ViewModel() {
                 color = animal.color
             )
             animalsDao.insertAnimal(entity)
-            Log.d("AnimalViewModel", "Animal added: $animal")
+            Log.d("SelectionViewModel", "Animal added: $animal")
             loadAnimals()  // Загружаем список животных
             clearAnimalForm()  // Очищаем поля формы
         }
     }
 
-    //        fun addAnimal(animal: Animal) {
-//            viewModelScope.launch {
-//                val entity = AnimalsEntity(
-//                    type = animal.type,
-//                    name = animal.name,
-//                    color = animal.color
-//                )
-//                animalsDao.insertAnimal(entity)
-//                // После добавления обновляем список животных
-//                val entities = animalsDao.getAllAnimals().value.orEmpty()
-//                _state.value = _state.value.copy(
-//                    animals = entities.map { it.toAnimal() }
-//
-//                )
-//            }
-//        }
     private fun clearAnimalForm() {
         _state.value = _state.value.copy(
             name = "",
@@ -87,31 +61,6 @@ class AnimalsViewModel() : ViewModel() {
             loadAnimals()
         }
     }
-
-    fun setSelectedType(type: AnimalType) {
-        _state.value = _state.value.copy(
-            selectedType = type
-            )
-    }
-
-    fun setSelectedAnimal(animal: AnimalType) {
-        _state.value = _state.value.copy(
-            selectedAnimal = animal
-        )
-    }
-
-    fun setName(name: String) {
-        _state.value = _state.value.copy(
-            name = name
-        )
-    }
-
-    fun setColor(color: String) {
-        _state.value = _state.value.copy(
-            color = color
-        )
-    }
-
 
     fun toggleDeleteMode() {
         _state.value = _state.value.copy(
@@ -129,12 +78,6 @@ class AnimalsViewModel() : ViewModel() {
         )
     }
 
-    fun showAnimalSelectionDialog(show: Boolean) {
-        _state.value = _state.value.copy(
-            showAnimalSelectionDialog = show
-        )
-    }
-
     fun clearSelectedAnimals() {
         _state.value = _state.value.copy(
             selectedAnimalIds = emptySet(),
@@ -142,4 +85,3 @@ class AnimalsViewModel() : ViewModel() {
         )
     }
 }
-//

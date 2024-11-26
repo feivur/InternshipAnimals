@@ -14,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.project2.screens.selection.AnimalSelectionScreen
+import com.example.project2.structure.Animal
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 import com.example.project2.ui.theme.values.XXL
@@ -29,12 +30,26 @@ import com.example.project2.ui.theme.values.XXL
 
 @Composable
 fun ZooScreen(
-    navController: NavController,
+    navController: NavController
 ) {
     val animalViewModel: AnimalsViewModel = viewModel()
-
     val state by animalViewModel.state.collectAsState()
 
+
+    // Получаем новое животное из сохранённого состояния
+    val newAnimal = navController.currentBackStackEntry
+        ?.savedStateHandle
+        ?.get<Animal>("newAnimal")
+
+    // Если новое животное есть, добавляем его
+    LaunchedEffect(newAnimal) {
+        newAnimal?.let {
+            animalViewModel.addAnimal(it)
+            navController.currentBackStackEntry?.savedStateHandle?.remove<Animal>("newAnimal")
+        }
+    }
+
+    //
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -68,7 +83,7 @@ fun ZooScreen(
         ) {
             if (!state.deleteMode) {
                 Button(
-                    onClick = { animalViewModel.showAnimalSelectionDialog(true) },
+                    onClick = { navController.navigate("animal_selection") },//
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
                 ) {
@@ -99,20 +114,6 @@ fun ZooScreen(
             ) {
                 Text("Delete", color = Color.White)
             }
-        }
-
-        // Диалог добавления животного
-        if (state.showAnimalSelectionDialog) {
-            AnimalSelectionScreen(
-                onSubmit = { animal ->
-                    if (animal != null) {
-                        animalViewModel.addAnimal(animal) // Добавление животного
-                    }
-                    animalViewModel.showAnimalSelectionDialog(false) // Закрытие диалога
-                },
-                onDismissRequest = { animalViewModel.showAnimalSelectionDialog(false) },
-                animalViewModel = animalViewModel
-            )
         }
     }
 }

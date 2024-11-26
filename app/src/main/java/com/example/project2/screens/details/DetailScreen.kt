@@ -25,7 +25,6 @@ import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 import com.example.project2.ui.theme.values.text_L
 import com.example.project2.ui.theme.values.text_M
-import com.example.project2.screens.list.AnimalsViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,9 +34,8 @@ fun AnimalDetailScreen(
     animalId: Long?
 ) {
 
-    val animalViewModel: AnimalsViewModel = viewModel()
-
-    val state by animalViewModel.state.collectAsState()
+    val detailViewModel: DetailViewModel = viewModel()
+    val state by detailViewModel.state.collectAsState()
 
     val animal = animalId?.let { id ->
         state.animals.find { it.id == id }

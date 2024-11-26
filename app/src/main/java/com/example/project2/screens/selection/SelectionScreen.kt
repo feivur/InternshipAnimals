@@ -8,27 +8,32 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 import com.example.project2.structure.Animal
 import com.example.project2.structure.Cat
 import com.example.project2.structure.Dog
 import com.example.project2.structure.Frog
 import com.example.project2.structure.Triton
+
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
-import com.example.project2.screens.list.AnimalsViewModel
 
 enum class AnimalType {
     Mammal, Reptile,
@@ -38,10 +43,10 @@ enum class AnimalType {
 @Composable
 fun AnimalSelectionScreen(
     onDismissRequest: () -> Unit,
-    onSubmit: (Animal?) -> Unit,
-    animalViewModel: AnimalsViewModel
+    onSubmit: (Animal?) -> Unit
 ) {
-    val state by animalViewModel.state.collectAsState()
+    val selectionViewModel: SelectionViewModel = viewModel()
+    val state by selectionViewModel.state.collectAsState()
     val isFormValid = state.name.isNotEmpty() && state.color.isNotEmpty()
 
     val animalMap = mapOf(
@@ -54,7 +59,7 @@ fun AnimalSelectionScreen(
 
     // Сбрасываем выбранное животное при смене типа
     LaunchedEffect(state.selectedType) {
-        animalViewModel.setSelectedAnimal(currentAnimals.firstOrNull() ?: AnimalType.Cat)
+        selectionViewModel.setSelectedAnimal(currentAnimals.firstOrNull() ?: AnimalType.Cat)
     }
 
     Dialog(onDismissRequest = onDismissRequest) {
@@ -70,7 +75,7 @@ fun AnimalSelectionScreen(
                 Row {
                     RadioButton(
                         selected = state.selectedType == type,
-                        onClick = { animalViewModel.setSelectedType(type) }
+                        onClick = { selectionViewModel.setSelectedType(type) }
                     )
                     Text(type.name, modifier = Modifier.padding(start = S))
                 }
@@ -84,7 +89,7 @@ fun AnimalSelectionScreen(
                 Row {
                     RadioButton(
                         selected = state.selectedAnimal == animal,
-                        onClick = { animalViewModel.setSelectedAnimal(animal) }
+                        onClick = { selectionViewModel.setSelectedAnimal(animal) }
                     )
                     Text(animal.name, modifier = Modifier.padding(start = S))
                 }
@@ -95,7 +100,7 @@ fun AnimalSelectionScreen(
             // Ввод имени животного
             TextField(
                 value = state.name,
-                onValueChange = { animalViewModel.setName(it) },
+                onValueChange = { selectionViewModel.setName(it) },
                 label = { Text("Name") },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -105,7 +110,7 @@ fun AnimalSelectionScreen(
             // Ввод цвета животного
             TextField(
                 value = state.color,
-                onValueChange = { animalViewModel.setColor(it) },
+                onValueChange = { selectionViewModel.setColor(it) },
                 label = { Text("Color") },
                 modifier = Modifier
                     .fillMaxWidth()
