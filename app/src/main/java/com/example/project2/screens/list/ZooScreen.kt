@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.project2.screens.selection.AnimalSelectionScreen
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 import com.example.project2.ui.theme.values.XXL
@@ -68,7 +67,7 @@ fun ZooScreen(
         ) {
             if (!state.deleteMode) {
                 Button(
-                    onClick = { animalViewModel.showAnimalSelectionDialog(true) },
+                    onClick = { navController.navigate("animal_selection") },//
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
                 ) {
@@ -102,17 +101,17 @@ fun ZooScreen(
         }
 
         // Диалог добавления животного
-        if (state.showAnimalSelectionDialog) {
-            AnimalSelectionScreen(
-                onSubmit = { animal ->
-                    if (animal != null) {
-                        animalViewModel.addAnimal(animal) // Добавление животного
-                    }
-                    animalViewModel.showAnimalSelectionDialog(false) // Закрытие диалога
-                },
-                onDismissRequest = { animalViewModel.showAnimalSelectionDialog(false) },
-                animalViewModel = animalViewModel
-            )
-        }
+//        if (state.showAnimalSelectionDialog) {
+//            AnimalSelectionScreen(
+//                onSubmit = { animal ->
+//                    if (animal != null) {
+//                        animalViewModel.addAnimal(animal) // Добавление животного
+//                    }
+//                    animalViewModel.showAnimalSelectionDialog(false) // Закрытие диалога
+//                },
+//                onDismissRequest = { animalViewModel.showAnimalSelectionDialog(false) },
+//                selectionViewModel = animalViewModel
+//            )
+//        }
     }
 }

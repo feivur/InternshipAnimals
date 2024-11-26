@@ -28,7 +28,6 @@ import com.example.project2.structure.Frog
 import com.example.project2.structure.Triton
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
-import com.example.project2.screens.list.AnimalsViewModel
 
 enum class AnimalType {
     Mammal, Reptile,
@@ -39,9 +38,9 @@ enum class AnimalType {
 fun AnimalSelectionScreen(
     onDismissRequest: () -> Unit,
     onSubmit: (Animal?) -> Unit,
-    animalViewModel: AnimalsViewModel
+    selectionViewModel: SelectionViewModel
 ) {
-    val state by animalViewModel.state.collectAsState()
+    val state by selectionViewModel.state.collectAsState()
     val isFormValid = state.name.isNotEmpty() && state.color.isNotEmpty()
 
     val animalMap = mapOf(
@@ -51,10 +50,24 @@ fun AnimalSelectionScreen(
 
     val currentAnimals =
         remember(state.selectedType) { animalMap[state.selectedType] ?: emptyList() }
+//addAnimal dialog
+    if (state.showAnimalSelectionDialog) {
+        AnimalSelectionScreen(
+            onSubmit = { animal ->
+                if (animal != null) {
+                    selectionViewModel.addAnimal(animal) // Добавление животного
+                }
+                selectionViewModel.showAnimalSelectionDialog(false) // Закрытие диалога
+            },
+            onDismissRequest = { selectionViewModel.showAnimalSelectionDialog(false) },
+            selectionViewModel = selectionViewModel
+        )
+    }
+
 
     // Сбрасываем выбранное животное при смене типа
     LaunchedEffect(state.selectedType) {
-        animalViewModel.setSelectedAnimal(currentAnimals.firstOrNull() ?: AnimalType.Cat)
+        selectionViewModel.setSelectedAnimal(currentAnimals.firstOrNull() ?: AnimalType.Cat)
     }
 
     Dialog(onDismissRequest = onDismissRequest) {
@@ -70,7 +83,7 @@ fun AnimalSelectionScreen(
                 Row {
                     RadioButton(
                         selected = state.selectedType == type,
-                        onClick = { animalViewModel.setSelectedType(type) }
+                        onClick = { selectionViewModel.setSelectedType(type) }
                     )
                     Text(type.name, modifier = Modifier.padding(start = S))
                 }
@@ -84,7 +97,7 @@ fun AnimalSelectionScreen(
                 Row {
                     RadioButton(
                         selected = state.selectedAnimal == animal,
-                        onClick = { animalViewModel.setSelectedAnimal(animal) }
+                        onClick = { selectionViewModel.setSelectedAnimal(animal) }
                     )
                     Text(animal.name, modifier = Modifier.padding(start = S))
                 }
@@ -95,7 +108,7 @@ fun AnimalSelectionScreen(
             // Ввод имени животного
             TextField(
                 value = state.name,
-                onValueChange = { animalViewModel.setName(it) },
+                onValueChange = { selectionViewModel.setName(it) },
                 label = { Text("Name") },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -105,7 +118,7 @@ fun AnimalSelectionScreen(
             // Ввод цвета животного
             TextField(
                 value = state.color,
-                onValueChange = { animalViewModel.setColor(it) },
+                onValueChange = { selectionViewModel.setColor(it) },
                 label = { Text("Color") },
                 modifier = Modifier
                     .fillMaxWidth()
