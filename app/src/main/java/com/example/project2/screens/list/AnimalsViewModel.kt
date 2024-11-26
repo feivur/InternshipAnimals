@@ -1,8 +1,12 @@
 package com.example.project2.screens.list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.project2.App
+import com.example.project2.db.AnimalsEntity
+import com.example.project2.screens.selection.AnimalType
+import com.example.project2.structure.Animal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -28,38 +32,35 @@ class AnimalsViewModel() : ViewModel() {
         }
     }
 
+    fun addAnimal(animal: Animal) {
+        viewModelScope.launch {
+            val entity = AnimalsEntity(
+                type = animal.type,
+                name = animal.name,
+                color = animal.color
+            )
+            animalsDao.insertAnimal(entity)
+            Log.d("SelectionViewModel", "Animal added: $animal")
+            loadAnimals()  // Загружаем список животных
+            clearAnimalForm()  // Очищаем поля формы
+        }
+    }
 
-//    fun addAnimal(animal: Animal) {
-//        viewModelScope.launch {
-//            val entity = AnimalsEntity(
-//                type = animal.type,
-//                name = animal.name,
-//                color = animal.color
-//            )
-//            animalsDao.insertAnimal(entity)
-//            Log.d("SelectionViewModel", "Animal added: $animal")
-//            loadAnimals()  // Загружаем список животных
-//            clearAnimalForm()  // Очищаем поля формы
-//        }
-//    }
+    private fun clearAnimalForm() {
+        _state.value = _state.value.copy(
+            name = "",
+            color = "",
+            selectedType = AnimalType.Mammal,
+            selectedAnimal = AnimalType.Cat
+        )
+    }
 
-    //    private fun clearAnimalForm() {
-//        _state.value = _state.value.copy(
-//            name = "",
-//            color = "",
-//            selectedType = AnimalType.Mammal,
-//            selectedAnimal = AnimalType.Cat
-//        )
-//    }
     fun deleteSelectedAnimals(ids: List<Long>) {
         viewModelScope.launch {
             animalsDao.deleteAnimals(ids)
             loadAnimals()
         }
     }
-
-
-
 
     fun toggleDeleteMode() {
         _state.value = _state.value.copy(
@@ -77,12 +78,6 @@ class AnimalsViewModel() : ViewModel() {
         )
     }
 
-//    fun showAnimalSelectionDialog(show: Boolean) {
-//        _state.value = _state.value.copy(
-//            showAnimalSelectionDialog = show
-//        )
-//    }
-
     fun clearSelectedAnimals() {
         _state.value = _state.value.copy(
             selectedAnimalIds = emptySet(),
@@ -90,4 +85,3 @@ class AnimalsViewModel() : ViewModel() {
         )
     }
 }
-//

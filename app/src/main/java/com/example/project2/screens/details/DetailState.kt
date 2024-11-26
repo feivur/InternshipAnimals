@@ -6,5 +6,4 @@ data class DetailState(
     val animals: List<Animal> = emptyList(),
     val name: String = "",
     val color: String = ""
-
 )

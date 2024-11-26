@@ -8,24 +8,30 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 import com.example.project2.structure.Animal
 import com.example.project2.structure.Cat
 import com.example.project2.structure.Dog
 import com.example.project2.structure.Frog
 import com.example.project2.structure.Triton
+
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 
@@ -37,9 +43,9 @@ enum class AnimalType {
 @Composable
 fun AnimalSelectionScreen(
     onDismissRequest: () -> Unit,
-    onSubmit: (Animal?) -> Unit,
-    selectionViewModel: SelectionViewModel
+    onSubmit: (Animal?) -> Unit
 ) {
+    val selectionViewModel: SelectionViewModel = viewModel()
     val state by selectionViewModel.state.collectAsState()
     val isFormValid = state.name.isNotEmpty() && state.color.isNotEmpty()
 
@@ -50,20 +56,6 @@ fun AnimalSelectionScreen(
 
     val currentAnimals =
         remember(state.selectedType) { animalMap[state.selectedType] ?: emptyList() }
-//addAnimal dialog
-    if (state.showAnimalSelectionDialog) {
-        AnimalSelectionScreen(
-            onSubmit = { animal ->
-                if (animal != null) {
-                    selectionViewModel.addAnimal(animal) // Добавление животного
-                }
-                selectionViewModel.showAnimalSelectionDialog(false) // Закрытие диалога
-            },
-            onDismissRequest = { selectionViewModel.showAnimalSelectionDialog(false) },
-            selectionViewModel = selectionViewModel
-        )
-    }
-
 
     // Сбрасываем выбранное животное при смене типа
     LaunchedEffect(state.selectedType) {

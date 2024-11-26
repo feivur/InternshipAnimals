@@ -35,7 +35,6 @@ fun AnimalDetailScreen(
 ) {
 
     val detailViewModel: DetailViewModel = viewModel()
-
     val state by detailViewModel.state.collectAsState()
 
     val animal = animalId?.let { id ->

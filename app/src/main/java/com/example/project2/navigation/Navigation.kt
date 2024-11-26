@@ -1,7 +1,6 @@
 package com.example.project2.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -10,7 +9,6 @@ import androidx.navigation.navArgument
 import com.example.project2.screens.details.AnimalDetailScreen
 import com.example.project2.screens.list.ZooScreen
 import com.example.project2.screens.selection.AnimalSelectionScreen
-import com.example.project2.screens.selection.SelectionViewModel
 
 
 @Composable
@@ -30,17 +28,14 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
         composable("animal_selection") {
-            val selectionViewModel: SelectionViewModel = viewModel()
             AnimalSelectionScreen(
                 onDismissRequest = { navController.popBackStack() },
                 onSubmit = { animal ->
-                    // Возвращаем результат, если животное добавлено
                     animal?.let {
-                        selectionViewModel.addAnimal(it)
-                        navController.popBackStack()
+                        navController.previousBackStackEntry?.savedStateHandle?.set("newAnimal", it)
                     }
-                },
-                selectionViewModel = selectionViewModel
+                    navController.popBackStack()
+                }
             )
         }
 
