@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class AnimalsViewModel() : ViewModel() {
+class AnimalsListModel() : ViewModel() {
 
     private val animalsDao = App.animalsDao!!
 
-    private val _state = MutableStateFlow(AnimalsState())
-    val state: StateFlow<AnimalsState> = _state
+    private val _state = MutableStateFlow(AnimalsListState())
+    val state: StateFlow<AnimalsListState> = _state
 
     init {
         loadAnimals()

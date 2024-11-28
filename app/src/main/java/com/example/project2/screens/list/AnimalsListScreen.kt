@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.project2.screens.selection.AnimalSelectionScreen
 import com.example.project2.structure.Animal
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
@@ -32,7 +33,7 @@ import com.example.project2.ui.theme.values.XXL
 fun ZooScreen(
     navController: NavController
 ) {
-    val animalViewModel: AnimalsViewModel = viewModel()
+    val animalViewModel: AnimalsListModel = viewModel()
     val state by animalViewModel.state.collectAsState()
 
 
@@ -57,7 +58,7 @@ fun ZooScreen(
     ) {
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(state.animals) { animal ->
-                AnimalItem(
+                AnimalItemView(
                     animal = animal,
                     onClick = {
                         if (!state.deleteMode) {
@@ -83,7 +84,10 @@ fun ZooScreen(
         ) {
             if (!state.deleteMode) {
                 Button(
-                    onClick = { navController.navigate("animal_selection") },//
+                    onClick = {
+                        navController.navigate("animal_selection")
+                        showAddDialog = true
+                    },
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
                 ) {
@@ -115,5 +119,16 @@ fun ZooScreen(
                 Text("Delete", color = Color.White)
             }
         }
+    }
+
+    if (showAddDialog){
+        AnimalSelectionScreen(
+            onDismissRequest = {
+                showAddDialog = false
+            } ,
+            onSubmit = {
+                model.loadAnimals()
+            }
+        )
     }
 }

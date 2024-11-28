@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -25,21 +26,31 @@ import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 import com.example.project2.ui.theme.values.text_L
 import com.example.project2.ui.theme.values.text_M
+import io.reactivex.disposables.Disposable
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimalDetailScreen(
     navController: NavController,
-    animalId: Long?
+    animalId: Long
 ) {
 
     val detailViewModel: DetailViewModel = viewModel()
     val state by detailViewModel.state.collectAsState()
 
-    val animal = animalId?.let { id ->
+    DisposableEffect(animalId) {
+        detailViewModel.init(animalId)
+        onDispose {
+
+        }
+    }
+
+    //
+    /*val animal = animalId?.let { id ->
         state.animals.find { it.id == id }
     }
+    */
 
     Scaffold(
         topBar = {
@@ -60,30 +71,30 @@ fun AnimalDetailScreen(
                 .padding(M),
             verticalArrangement = Arrangement.spacedBy(S)
         ) {
-            if (animal != null) {
+            if (state.animal != null) {
                 Text(
-                    text = "Animal Type: ${animal.type}",
+                    text = "Animal Type: ${state.animal!!.type}",
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,
                         fontSize = text_L
                     )
                 )
                 Text(
-                    text = "Name: ${animal.name}",
+                    text = "Name: ${state.animal!!.name}",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontStyle = FontStyle.Italic,
                         fontSize = text_M
                     )
                 )
                 Text(
-                    text = "Color: ${animal.color}",
+                    text = "Color: ${state.animal!!.color}",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontStyle = FontStyle.Italic,
                         fontSize = text_M
                     )
                 )
                 Text(
-                    text = "Description: ${animal.describe()}",
+                    text = "Description: ${state.animal!!.describe()}",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontSize = text_M
                     )
