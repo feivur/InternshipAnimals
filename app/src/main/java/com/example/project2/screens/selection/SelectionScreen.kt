@@ -152,6 +152,7 @@ fun AnimalSelectionScreen(
                             else -> null
                         }
                         onSubmit(animal)
+                        selectionViewModel.clearForm()//
                     },
                     enabled = isFormValid,
                     modifier = Modifier

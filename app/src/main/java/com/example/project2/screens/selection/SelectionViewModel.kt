@@ -52,6 +52,13 @@ class SelectionViewModel() : ViewModel() {
             color = color
         )
     }
-
+    fun clearForm() {
+        _state.value = _state.value.copy(
+            name = "",
+            color = "",
+            selectedType = AnimalType.Mammal,
+            selectedAnimal = AnimalType.Cat
+        )
+    }
 
 }

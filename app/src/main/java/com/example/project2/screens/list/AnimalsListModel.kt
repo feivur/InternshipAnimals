@@ -3,7 +3,6 @@ package com.example.project2.screens.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.project2.App
-import com.example.project2.screens.selection.AnimalType
 import com.example.project2.structure.Animal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,18 +31,9 @@ class AnimalsListModel() : ViewModel() {
         viewModelScope.launch {
             repository.insert(animal)
             loadAnimals()
-            clearAnimalForm()  // очищаем форму
         }
     }
 
-    private fun clearAnimalForm() {
-        _state.value = _state.value.copy(
-            name = "",
-            color = "",
-            selectedType = AnimalType.Mammal,
-            selectedAnimal = AnimalType.Cat
-        )
-    }
 
     fun deleteSelectedAnimals(ids: List<Long>) {
         viewModelScope.launch {
