@@ -3,13 +3,14 @@ package com.example.project2.screens.selection
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.project2.App
+import com.example.project2.utils.AnimalsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SelectionViewModel() : ViewModel() {
 
-    private val animalsDao = App.animalsDao!!
+    private val repository: AnimalsRepository = App.animalsRepository!!
 
     private val _state = MutableStateFlow(SelectionState())
     val state: StateFlow<SelectionState> = _state
@@ -18,12 +19,11 @@ class SelectionViewModel() : ViewModel() {
         loadAnimals()
     }
 
-    //todo remove
     private fun loadAnimals() {
         viewModelScope.launch {
-            animalsDao.getAllAnimals().collect { entities ->
+            repository.list().collect { animals ->
                 _state.value = _state.value.copy(
-                    animals = entities.map { it.toAnimal() }
+                    animals = animals
                 )
             }
         }

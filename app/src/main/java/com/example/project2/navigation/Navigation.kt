@@ -8,7 +8,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.project2.screens.details.AnimalDetailScreen
 import com.example.project2.screens.list.ZooScreen
-import com.example.project2.screens.selection.AnimalSelectionScreen
 
 
 @Composable
@@ -22,23 +21,13 @@ fun AppNavigation(navController: NavHostController) {
             arguments = listOf(navArgument("animalId") { type = NavType.LongType })
         ) { backStackEntry ->
             val animalId = backStackEntry.arguments?.getLong("animalId")
-            AnimalDetailScreen(
-                navController = navController,
-                animalId = animalId
-            )
+            if (animalId != null) {
+                AnimalDetailScreen(
+                    navController = navController,
+                    animalId = animalId
+                )
+            }
         }
-        composable("animal_selection") {
-            //todo remove from nav
-            AnimalSelectionScreen(
-                onDismissRequest = { navController.popBackStack() },
-                onSubmit = { animal ->
-                    animal?.let {
-                        navController.previousBackStackEntry?.savedStateHandle?.set("newAnimal", it)
-                    }
-                    navController.popBackStack()
-                }
-            )
-        }
-
+        //todo remove from nav +
     }
 }

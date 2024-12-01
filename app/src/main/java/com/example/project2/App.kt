@@ -2,7 +2,6 @@ package com.example.project2
 
 import android.app.Application
 import androidx.room.Room
-import com.example.project2.db.AnimalsDao
 import com.example.project2.db.RoomDB
 import com.example.project2.utils.AnimalsRepository
 
@@ -18,15 +17,12 @@ class App : Application() {
             .fallbackToDestructiveMigration()
             .build()
         // Сохраняем ссылку на DAO
-        animalsDao = db.animalsDao()
-        animalsRepository = AnimalsRepository(animalsDao)
+        animalsRepository = AnimalsRepository(db.animalsDao())
     }
 
     companion object {
         // Ссылка на DAO
-        //todo выпилить
-        var animalsDao: AnimalsDao? = null
-            private set
+        //todo выпилить +
 
         var animalsRepository: AnimalsRepository? = null
             private set

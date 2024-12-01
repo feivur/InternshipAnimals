@@ -7,7 +7,6 @@ data class AnimalsListState(
     val animals: List<Animal> = emptyList(),//
     val selectedAnimalIds: Set<Long> = emptySet(),
     val deleteMode: Boolean = false,
-    //val isLoading: Boolean = false,//
     val selectedType: AnimalType = AnimalType.Mammal,
     val selectedAnimal: AnimalType = AnimalType.Cat,
     val name: String = "",

@@ -1,16 +1,22 @@
 package com.example.project2.utils
 
-import androidx.room.Insert
-import androidx.room.Query
 import com.example.project2.db.AnimalsDao
 import com.example.project2.db.AnimalsEntity
 import com.example.project2.structure.Animal
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class AnimalsRepository(
     private val animalsDao: AnimalsDao
 ) {
-    suspend fun insert(animal: Animal){
+    // Поток для получения списка всех животных
+    val animalList: Flow<List<Animal>> = animalsDao.getAllAnimals()
+        .map { entities -> entities.map { it.toAnimal() } }
+
+    // Вставка нового животного
+    suspend fun insert(animal: Animal) {
         val entity = AnimalsEntity(
             type = animal.type,
             name = animal.name,
@@ -19,22 +25,16 @@ class AnimalsRepository(
         animalsDao.insertAnimal(entity)
     }
 
-    fun delete(ids: List<Long>){
-        TODO("")
-
+    // Удаление животных по списку ID
+    suspend fun delete(ids: List<Long>) {
+        animalsDao.deleteAnimals(ids)
     }
 
-    fun list(): Flow<List<Animal>>{
-        TODO("")
-    }
+    // Получение списка животных
+    fun list(): Flow<List<Animal>> = animalList
 
-    fun delete(id: Int){
-        TODO("")
-
-    }
-
-    fun get(id: Int): Animal{
-        TODO("")
-
+    // Получение конкретного животного по ID
+    suspend fun get(id: Long): Animal = withContext(Dispatchers.IO) {
+        animalsDao.get(id).toAnimal()
     }
 }
