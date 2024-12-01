@@ -18,6 +18,7 @@ class SelectionViewModel() : ViewModel() {
         loadAnimals()
     }
 
+    //todo remove
     private fun loadAnimals() {
         viewModelScope.launch {
             animalsDao.getAllAnimals().collect { entities ->

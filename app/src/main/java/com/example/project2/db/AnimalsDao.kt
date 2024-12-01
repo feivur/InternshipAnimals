@@ -19,4 +19,7 @@ interface AnimalsDao {
     @Query("DELETE FROM animals WHERE animalId = :id")
     fun deleteAnimal(id: Int)
 
+    @Query("SELECT * FROM animals WHERE animalId = :id")
+    fun get(id: Int): AnimalsEntity
+
 }

@@ -40,6 +40,7 @@ enum class AnimalType {
     Cat, Dog, Frog, Triton,
 }
 
+
 @Composable
 fun AnimalSelectionScreen(
     onDismissRequest: () -> Unit,

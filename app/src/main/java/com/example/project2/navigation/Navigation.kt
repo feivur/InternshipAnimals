@@ -28,6 +28,7 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
         composable("animal_selection") {
+            //todo remove from nav
             AnimalSelectionScreen(
                 onDismissRequest = { navController.popBackStack() },
                 onSubmit = { animal ->

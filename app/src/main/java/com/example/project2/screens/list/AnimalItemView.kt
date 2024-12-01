@@ -21,7 +21,7 @@ import com.example.project2.structure.Reptile
 import com.example.project2.ui.theme.values.S
 
 @Composable
-fun AnimalItem(
+fun AnimalItemView(
     animal: Animal,
     onClick: () -> Unit,
     onCheckedChange: (Boolean) -> Unit,

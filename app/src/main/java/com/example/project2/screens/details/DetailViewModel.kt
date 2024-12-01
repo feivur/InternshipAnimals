@@ -8,22 +8,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class DetailViewModel() : ViewModel() {
-    private val animalsDao = App.animalsDao!!
+    private val animalsDao = App.animalsDao!!//todo remove
+
+    private val animalsRepository = App.animalsRepository!!
 
     private val _state = MutableStateFlow(DetailState())
     val state: StateFlow<DetailState> = _state
 
-    init {
-        loadAnimals()
-    }
 
-    private fun loadAnimals() {
+    fun init(animalId: Long) {
         viewModelScope.launch {
-            animalsDao.getAllAnimals().collect { entities ->
-                _state.value = _state.value.copy(
-                    animals = entities.map { it.toAnimal() }
-                )
-            }
+            val animal = animalsRepository.get(animalId)
+            _state.value = _state.value.copy(
+                animal = animal
+            )
         }
     }
+}
 }
