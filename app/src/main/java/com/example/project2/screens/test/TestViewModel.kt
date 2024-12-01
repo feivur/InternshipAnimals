@@ -1,7 +1,6 @@
 package com.example.project2.screens.test
 
 import androidx.lifecycle.ViewModel
-import com.example.project2.App
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +12,7 @@ class TestViewModel(): ViewModel() {
     //or
     // https://metanit.com/kotlin/jetpack/16.3.php
 
-    private val dao = App.animalsDao
+    //private val dao = App.animalsDao
 
     private val _state = MutableStateFlow(TestState())
 

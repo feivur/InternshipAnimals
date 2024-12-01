@@ -124,7 +124,7 @@ fun AnimalSelectionScreen(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Button(
-                    onClick = {
+                    onClick = {////
                         val animal = when (state.selectedAnimal) {
                             AnimalType.Cat -> Cat(
                                 id = System.currentTimeMillis(),
@@ -150,8 +150,9 @@ fun AnimalSelectionScreen(
                                 color = state.color
                             )
                             else -> null
-                        }
+                        }////
                         onSubmit(animal)
+                        selectionViewModel.clearForm()//
                     },
                     enabled = isFormValid,
                     modifier = Modifier

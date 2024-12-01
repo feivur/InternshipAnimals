@@ -14,16 +14,17 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.project2.screens.selection.AnimalSelectionScreen
-import com.example.project2.structure.Animal
 import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 import com.example.project2.ui.theme.values.XXL
@@ -36,20 +37,7 @@ fun ZooScreen(
     val animalViewModel: AnimalsListModel = viewModel()
     val state by animalViewModel.state.collectAsState()
 
-
-    // Получаем новое животное из сохранённого состояния
-    val newAnimal = navController.currentBackStackEntry
-        ?.savedStateHandle
-        ?.get<Animal>("newAnimal")
-
-    // Если новое животное есть, добавляем его
-    LaunchedEffect(newAnimal) {
-        newAnimal?.let {
-            animalViewModel.addAnimal(it)
-            navController.currentBackStackEntry?.savedStateHandle?.remove<Animal>("newAnimal")
-        }
-    }
-
+    var showAddDialog by remember { mutableStateOf(false) }
     //
     Column(
         modifier = Modifier
@@ -85,7 +73,7 @@ fun ZooScreen(
             if (!state.deleteMode) {
                 Button(
                     onClick = {
-                        navController.navigate("animal_selection")
+                        // navController.navigate("animal_selection")
                         showAddDialog = true
                     },
                     modifier = Modifier.weight(1f),
@@ -121,13 +109,12 @@ fun ZooScreen(
         }
     }
 
-    if (showAddDialog){
+    if (showAddDialog) {
         AnimalSelectionScreen(
-            onDismissRequest = {
+            onDismissRequest = { showAddDialog = false },
+            onSubmit = { animal ->
+                animal?.let { animalViewModel.addAnimal(it) }
                 showAddDialog = false
-            } ,
-            onSubmit = {
-                model.loadAnimals()
             }
         )
     }

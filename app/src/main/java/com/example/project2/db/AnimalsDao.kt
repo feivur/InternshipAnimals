@@ -14,12 +14,9 @@ interface AnimalsDao {
     suspend fun deleteAnimals(ids: List<Long>)
 
     @Query("SELECT * FROM animals")
-    fun getAllAnimals(): Flow<List<AnimalsEntity>>//LiveData //Flow
-
-    @Query("DELETE FROM animals WHERE animalId = :id")
-    fun deleteAnimal(id: Int)
-
+    fun getAllAnimals(): Flow<List<AnimalsEntity>>
+    //get 1
     @Query("SELECT * FROM animals WHERE animalId = :id")
-    fun get(id: Int): AnimalsEntity
+    fun get(id: Long): AnimalsEntity
 
 }
