@@ -12,10 +12,15 @@ class AnimalsRepository(
     private val animalsDao: AnimalsDao
 ) {
     // Поток для получения списка всех животных
-    val animalList: Flow<List<Animal>> = animalsDao.getAllAnimals()
-        .map { entities -> entities.map { it.toAnimal() } }
+    private val animalList: Flow<List<Animal>> = animalsDao.getAllAnimals()
+        .map { entities ->
+            entities.map { it.toAnimal() }
+        }
 
-    // Вставка нового животного
+    //    suspend fun addAnimal(animal: Animal) {
+//        insert(animal)
+//    }
+    // Добавление животного
     suspend fun insert(animal: Animal) {
         val entity = AnimalsEntity(
             type = animal.type,

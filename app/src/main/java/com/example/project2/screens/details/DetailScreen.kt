@@ -26,7 +26,6 @@ import com.example.project2.ui.theme.values.M
 import com.example.project2.ui.theme.values.S
 import com.example.project2.ui.theme.values.text_L
 import com.example.project2.ui.theme.values.text_M
-import io.reactivex.disposables.Disposable
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +44,6 @@ fun AnimalDetailScreen(
 
         }
     }
-
     //
     /*val animal = animalId?.let { id ->
         state.animals.find { it.id == id }

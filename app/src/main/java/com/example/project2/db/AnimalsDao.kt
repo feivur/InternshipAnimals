@@ -15,7 +15,6 @@ interface AnimalsDao {
 
     @Query("SELECT * FROM animals")
     fun getAllAnimals(): Flow<List<AnimalsEntity>>
-
     //get 1
     @Query("SELECT * FROM animals WHERE animalId = :id")
     fun get(id: Long): AnimalsEntity

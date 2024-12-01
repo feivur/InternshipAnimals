@@ -1,33 +1,16 @@
 package com.example.project2.screens.selection
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.project2.App
-import com.example.project2.utils.AnimalsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 class SelectionViewModel() : ViewModel() {
 
-    private val repository: AnimalsRepository = App.animalsRepository!!
+    private val repository = App.animalsRepository!!
 
     private val _state = MutableStateFlow(SelectionState())
     val state: StateFlow<SelectionState> = _state
-
-    init {
-        loadAnimals()
-    }
-
-    private fun loadAnimals() {
-        viewModelScope.launch {
-            repository.list().collect { animals ->
-                _state.value = _state.value.copy(
-                    animals = animals
-                )
-            }
-        }
-    }
 
     fun setSelectedType(type: AnimalType) {
         _state.value = _state.value.copy(
@@ -52,6 +35,7 @@ class SelectionViewModel() : ViewModel() {
             color = color
         )
     }
+
     fun clearForm() {
         _state.value = _state.value.copy(
             name = "",
@@ -60,5 +44,39 @@ class SelectionViewModel() : ViewModel() {
             selectedAnimal = AnimalType.Cat
         )
     }
+//
+//    // Добавление животного через репозиторий
+//    fun addAnimal() {
+//        val animal = when (state.selectedAnimal) {
+//            AnimalType.Cat -> Cat(
+//                id = System.currentTimeMillis(),
+//                name = state.name,
+//                color = state.color
+//            )
+//
+//            AnimalType.Dog -> Dog(
+//                id = System.currentTimeMillis(),
+//                name = state.name,
+//                color = state.color
+//            )
+//
+//            AnimalType.Frog -> Frog(
+//                id = System.currentTimeMillis(),
+//                name = state.name,
+//                color = state.color
+//            )
+//
+//            AnimalType.Triton -> Triton(
+//                id = System.currentTimeMillis(),
+//                name = state.name,
+//                color = state.color
+//            )
+//            else -> null
+//        }
+//        animal?.let {
+//            viewModelScope.launch {
+//                repository.addAnimal(it)
+//            }}}
+
 
 }
