@@ -19,6 +19,7 @@ object RetrofitInstance {
         }
         .build()
 
+    //
     private val retrofit = Retrofit.Builder()
         .baseUrl("http://try.axxonsoft.com:8000/asip-api/") // Базовый URL
         .client(client)
