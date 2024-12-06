@@ -11,10 +11,8 @@ object ServerRepository {
         if (response.version.isNotBlank()) {
             emit(response.version)
         } else {
-            emit("Error: Empty version")
+            throw RuntimeException()
         }
-    }.catch { e ->
-        emit("Error: ${e.message}")
     }
 
 }
