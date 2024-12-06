@@ -6,8 +6,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.project2.screens.details.AnimalDetailScreen
-import com.example.project2.screens.list.ZooScreen
+import com.example.project2.screens.animals.details.AnimalDetailScreen
+import com.example.project2.screens.animals.list.ZooScreen
 
 
 @Composable

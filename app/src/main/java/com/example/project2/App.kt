@@ -2,7 +2,7 @@ package com.example.project2
 
 import android.app.Application
 import androidx.room.Room
-import com.example.project2.db.RoomDB
+import com.example.project2.db.animals.RoomDB
 import com.example.project2.utils.AnimalsRepository
 
 class App : Application() {

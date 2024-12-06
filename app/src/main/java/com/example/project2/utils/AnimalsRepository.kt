@@ -1,8 +1,8 @@
 package com.example.project2.utils
 
-import com.example.project2.db.AnimalsDao
-import com.example.project2.db.AnimalsEntity
-import com.example.project2.structure.Animal
+import com.example.project2.db.animals.AnimalsDao
+import com.example.project2.db.animals.AnimalsEntity
+import com.example.project2.structure.animals.Animal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

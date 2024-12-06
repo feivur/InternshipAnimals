@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.project2.server.ServerVersionScreen
+import com.example.project2.screens.axxonOne.version.ServerVersionScreen
 
 
 class MainActivity : ComponentActivity() {
