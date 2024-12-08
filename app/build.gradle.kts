@@ -50,11 +50,20 @@ android {
 }
 
 dependencies {
+    implementation("io.coil-kt:coil-compose:2.2.2")
+
+
+    //gson
+    implementation(libs.gson)
+
     //server parsing
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation(libs.logging.interceptor)
     //
 
     implementation(libs.androidx.runtime.livedata)

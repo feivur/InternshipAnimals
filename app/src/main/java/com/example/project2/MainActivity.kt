@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.project2.screens.axxonOne.version.ServerVersionScreen
+import com.example.project2.screens.axxonOne.data.ServerDataScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
 
 
             NavHost(navController = navController, startDestination = "server_version") {
-                composable("server_version") { ServerVersionScreen() }
+                composable("server_version") { ServerDataScreen() }
         }
     }
     }
