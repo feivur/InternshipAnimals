@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flow
 
 object ServerRepository {
 
-    val cameraName = "Camera On Stairs"//todo
+    //   val displayName = "Camera On Stairs"//todo
 
     suspend fun fetchCamerasWithSnapshots(): List<CameraWithSnapshot> {
         val response = RetrofitInstance.api.getCameras()
@@ -31,7 +31,6 @@ object ServerRepository {
             if (snapshotResponse.isSuccessful) {
                 val baseUrl = snapshotResponse.body()
                 baseUrl?.let {
-                    // убираем hosts/
                     val snapshotUrl = "http://try.axxonsoft.com:8000/asip-api/$it"
                     snapshotUrl.replace("hosts/", "") // убираем hosts/  из accessPoint
                 }

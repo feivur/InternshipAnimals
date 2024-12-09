@@ -14,9 +14,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.project2.utils.Sizes.size_m
+import com.example.project2.utils.Sizes.size_s
+import com.example.project2.utils.Sizes.text_size_l
 
 @Composable
 fun ServerDataScreen(viewModel: ServerDataModel = viewModel()) {
@@ -30,14 +32,14 @@ fun ServerDataScreen(viewModel: ServerDataModel = viewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(size_m),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = "Server Version: ${serverDataState.version}",
-            modifier = Modifier.padding(8.dp),
-            fontSize = 20.sp
+            modifier = Modifier.padding(size_s),
+            fontSize = text_size_l
         )
 
         Text(text = "Cameras: ${serverDataState.cameraCount}")
@@ -48,7 +50,7 @@ fun ServerDataScreen(viewModel: ServerDataModel = viewModel()) {
                     model = snapshotUrl,
                     contentDescription = "Snapshot for ${cameraWithSnapshot.camera.displayName}",
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(size_s)
                         .size(200.dp),
                     onError = { exception ->
                         Log.e(
