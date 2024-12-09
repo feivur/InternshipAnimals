@@ -17,9 +17,6 @@ class AnimalsRepository(
             entities.map { it.toAnimal() }
         }
 
-    //    suspend fun addAnimal(animal: Animal) {
-//        insert(animal)
-//    }
     // Добавление животного
     suspend fun insert(animal: Animal) {
         val entity = AnimalsEntity(
