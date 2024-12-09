@@ -2,6 +2,7 @@ package com.example.project2.server
 
 import com.example.project2.server.version.ServerVersionResponse
 import com.example.project2.structure.axxonOne.CameraList
+import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -21,7 +22,7 @@ interface ApiService {
         @Path("videoSourceId") videoSourceId: String,
         @Query("w") width: Int? = null,
         @Query("h") height: Int? = null
-    ): retrofit2.Response<String>
+    ): retrofit2.Response<ResponseBody>
 }
 
 

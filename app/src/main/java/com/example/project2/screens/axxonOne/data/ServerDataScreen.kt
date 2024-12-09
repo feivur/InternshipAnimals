@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.project2.structure.axxonOne.Camera
 import com.example.project2.utils.Sizes.size_m
 import com.example.project2.utils.Sizes.size_s
 import com.example.project2.utils.Sizes.text_size_l
@@ -28,6 +29,15 @@ fun ServerDataScreen(viewModel: ServerDataModel = viewModel()) {
         viewModel.loadServerVersion()
         viewModel.loadCameras()
     }
+
+    //todo
+/*
+LazyColumn{
+    items(cameras){camera ->
+        CameraView(camera)
+    }
+}
+*/
 
     Column(
         modifier = Modifier
@@ -65,3 +75,4 @@ fun ServerDataScreen(viewModel: ServerDataModel = viewModel()) {
         }
     }
 }
+
