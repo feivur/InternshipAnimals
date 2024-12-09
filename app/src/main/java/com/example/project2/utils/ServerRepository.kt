@@ -1,8 +1,8 @@
 package com.example.project2.utils
 
 import android.util.Log
-import com.example.project2.screens.axxonOne.data.ServerDataState
 import com.example.project2.server.RetrofitInstance
+import com.example.project2.structure.axxonOne.Camera
 import com.example.project2.structure.axxonOne.CameraWithSnapshot
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -10,54 +10,43 @@ import kotlinx.coroutines.flow.flow
 
 object ServerRepository {
 
-    fun fetchServerVersion(): Flow<String> = flow {
-        try {
-            val response = RetrofitInstance.api.getServerVersion()
-            if (response.version.isNotBlank()) {
-                emit(response.version)
+    val cameraName = "Camera On Stairs"//todo
+
+    suspend fun fetchCamerasWithSnapshots(): List<CameraWithSnapshot> {
+        val response = RetrofitInstance.api.getCameras()
+        val cameras = response.cameras
+
+        val camerasWithSnapshots = cameras.map { camera ->
+            val snapshotUrl = getSnapshotUrlForCamera(camera)
+            CameraWithSnapshot(camera = camera, snapshotUrl = snapshotUrl)
+        }
+
+        return camerasWithSnapshots
+    }
+
+    private suspend fun getSnapshotUrlForCamera(camera: Camera): String? {
+        return try {
+            // получаем snapshotURL для каждой камеры
+            val snapshotResponse = RetrofitInstance.api.getSnapshot(camera.displayId)
+            if (snapshotResponse.isSuccessful) {
+                val baseUrl = snapshotResponse.body()
+                baseUrl?.let {
+                    // убираем hosts/
+                    val snapshotUrl = "http://try.axxonsoft.com:8000/asip-api/$it"
+                    snapshotUrl.replace("hosts/", "") // убираем hosts/  из accessPoint
+                }
             } else {
-                throw RuntimeException("Server version not found")
+                Log.e("SnapshotError", "Error fetching snapshot URL: ${snapshotResponse.message()}")
+                null
             }
         } catch (e: Exception) {
-            // Логируем ошибку
-            Log.e("ServerRepository", "Error fetching server version: ${e.message}", e)
-            emit("Error")
+            Log.e("SnapshotError", "Error fetching snapshot URL for camera ${camera.displayId}: $e")
+            null
         }
     }
 
-
-    fun fetchCameras(): Flow<ServerDataState> = flow {
-        try {
-            val response = RetrofitInstance.api.getCameras()
-            if (response.cameras.isNotEmpty()) {
-                val camerasWithSnapshot = response.cameras.map { camera ->
-                    // Получаем ссылку на снимок для каждой камеры
-                    val snapshotUrl =
-                        camera.videoStreams.firstOrNull()?.accessPoint?.let { accessPoint ->
-                            val videoSourceId = accessPoint.split("/").drop(1).joinToString("/")
-                            val snapshotResponse = RetrofitInstance.api.getSnapshot(videoSourceId)
-
-                            // Если снимок был успешно получен, извлекаем URL
-                            if (snapshotResponse.isSuccessful) {
-                                snapshotResponse.body()
-                            } else {
-                                null
-                            }
-                        }
-
-                    // Создаем объект CameraWithSnapshot с камерой и снимком
-                    CameraWithSnapshot(camera = camera, snapshotUrl = snapshotUrl)
-                }
-
-                // Эмитим обновленное состояние с версией сервера и камерами
-                emit(ServerDataState(version = "1.0", cameras = camerasWithSnapshot))
-            } else {
-                throw RuntimeException("No cameras found")
-            }
-        } catch (e: Exception) {
-            // Если произошла ошибка, эмитим состояние с пустыми данными
-            emit(ServerDataState(version = "Error", cameras = emptyList()))
-            throw RuntimeException("Error fetching cameras: ${e.localizedMessage}")
-        }
+    fun fetchServerVersion(): Flow<String> = flow {
+        val response = RetrofitInstance.api.getServerVersion()
+        emit(response.version)
     }
 }

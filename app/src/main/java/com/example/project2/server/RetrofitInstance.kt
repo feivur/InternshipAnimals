@@ -15,11 +15,10 @@ object RetrofitInstance {
         .writeTimeout(30, TimeUnit.SECONDS)
         .retryOnConnectionFailure(true)
         .addInterceptor { chain ->
-            val originalRequest = chain.request()
-            val authorizedRequest = originalRequest.newBuilder()
+            val request = chain.request().newBuilder()
                 .header("Authorization", Credentials.basic("root", "root"))
                 .build()
-            chain.proceed(authorizedRequest)
+            chain.proceed(request)
         }
         .build()
 

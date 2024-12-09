@@ -1,5 +1,6 @@
 package com.example.project2.screens.axxonOne.data
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,9 +40,8 @@ fun ServerDataScreen(viewModel: ServerDataModel = viewModel()) {
             fontSize = 20.sp
         )
 
-        Text(text = "Cameras: ${serverDataState.cameras.size}")
+        Text(text = "Cameras: ${serverDataState.cameraCount}")
 
-        // Перебираем все камеры и отображаем их снимки
         serverDataState.cameras.forEach { cameraWithSnapshot ->
             cameraWithSnapshot.snapshotUrl?.let { snapshotUrl ->
                 AsyncImage(
@@ -50,8 +50,11 @@ fun ServerDataScreen(viewModel: ServerDataModel = viewModel()) {
                     modifier = Modifier
                         .padding(8.dp)
                         .size(200.dp),
-                    onError = {
-                        // Обработка ошибки загрузки изображения
+                    onError = { exception ->
+                        Log.e(
+                            "ImageLoad",
+                            "Error loading snapshot for ${cameraWithSnapshot.camera.displayName}: $exception"
+                        )
                     }
                 )
             } ?: run {
