@@ -12,6 +12,12 @@ object ServerRepository {
 
     //   val displayName = "Camera On Stairs"//todo
 
+    suspend fun getCameras(): List<Camera>{
+        val response = RetrofitInstance.api.getCameras()
+        return response.cameras
+    }
+
+
     suspend fun fetchCamerasWithSnapshots(): List<CameraWithSnapshot> {
         val response = RetrofitInstance.api.getCameras()
         val cameras = response.cameras
@@ -22,6 +28,16 @@ object ServerRepository {
         }
 
         return camerasWithSnapshots
+    }
+
+
+    suspend fun getSnapshot(videoSourseId: String): ByteArray{
+        val vsiFixed = videoSourseId.apply { replaceFirst("hosts/", "") }
+        val snapshotResponse = RetrofitInstance.api.getSnapshot(vsiFixed)
+        val bytes = snapshotResponse.body()?.bytes() ?: byteArrayOf()
+        if (bytes.isEmpty())
+            throw RuntimeException("no image data")
+        return bytes
     }
 
     private suspend fun getSnapshotUrlForCamera(camera: Camera): String? {
