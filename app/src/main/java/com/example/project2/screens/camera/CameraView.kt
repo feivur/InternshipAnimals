@@ -1,32 +1,46 @@
 package com.example.project2.screens.camera
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.project2.screens.axxonOne.data.ServerDataModel
 import com.example.project2.structure.axxonOne.Camera
 
 @Composable
-fun CameraView(camera: Camera){
-    val viewModel: CameraModel = viewModel(key = camera.displayId)
-
-    //todo view : name, id, image
+fun CameraView(camera: Camera, viewModel: CameraModel = viewModel()) {
     val state by viewModel.state.collectAsState()
 
-    DisposableEffect(camera) {
-        //todo init(camera) model
-        onDispose {}
+    LaunchedEffect(camera) {
+        viewModel.init(camera)
     }
 
-    if (state.bitmap != null) {
-        Image(
-            bitmap = state.bitmap!!.asImageBitmap(),
-            contentDescription = null
-        )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "Camera: ${state.name}")
+
+        state.bitmap?.let {
+            Image(
+                bitmap = it.asImageBitmap(),
+                contentDescription = "Camera Snapshot",
+                modifier = Modifier.size(200.dp)
+            )
+        } ?: Text(text = "Loading snapshot...")
     }
 }
