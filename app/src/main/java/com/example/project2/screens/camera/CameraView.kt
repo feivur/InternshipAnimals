@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.project2.structure.axxonOne.Camera
+import com.example.project2.utils.Sizes.size_m
 
 @Composable
 fun CameraView(camera: Camera, viewModel: CameraModel = viewModel()) {
@@ -29,7 +30,7 @@ fun CameraView(camera: Camera, viewModel: CameraModel = viewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(size_m),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -37,7 +38,7 @@ fun CameraView(camera: Camera, viewModel: CameraModel = viewModel()) {
 
         state.bitmap?.let {
             Image(
-                bitmap = it.asImageBitmap(),
+                bitmap = state.bitmap!!.asImageBitmap(),
                 contentDescription = "Camera Snapshot",
                 modifier = Modifier.size(200.dp)
             )

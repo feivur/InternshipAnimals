@@ -40,7 +40,10 @@ fun ServerDataScreen(viewModel: ServerDataModel = viewModel(), onCameraClick: (C
             modifier = Modifier.padding(size_m),
             fontSize = text_size_l
         )
-//todo
+//todo LazyColumn{
+//    items(cameras){camera ->
+//        CameraView(camera)
+//    }
         LazyColumn(modifier = Modifier.padding(size_m)) {
             itemsIndexed(serverDataState.cameras) { index, cameraWithSnapshot ->
                 val camera = cameraWithSnapshot.camera

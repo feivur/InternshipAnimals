@@ -42,6 +42,20 @@ class ServerDataModel : ViewModel() {
 
     //todo сделать экран со списком камер
     // каждая камера самостоятельна и грузит свою картинку своей моделью
+// todo fun loadCameras() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val cameras = ServerRepository.getCameras()
+//            val camera1 = cameras.first()
+//            try {
+//                val videoSourceId = camera1.videoStreams.first().accessPoint
+//                val bytes = ServerRepository.getSnapshot(videoSourceId) // todo move to CameraMovel
+//                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+//                //todo передать в UI
+//            }catch (e: Exception){
+//                //todo  передать в UI
+//            }
+//        }
+
 
 
 //    fun loadCamerasOld() {
