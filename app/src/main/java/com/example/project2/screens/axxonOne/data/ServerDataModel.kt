@@ -1,9 +1,9 @@
 package com.example.project2.screens.axxonOne.data
 
-import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.project2.structure.axxonOne.CameraWithSnapshot
 import com.example.project2.utils.ServerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,38 +25,40 @@ class ServerDataModel : ViewModel() {
 
     fun loadCameras() {
         viewModelScope.launch(Dispatchers.IO) {
-            val cameras = ServerRepository.getCameras()
-            val camera1 = cameras.first()
             try {
-                val videoSourceId = camera1.videoStreams.first().accessPoint
-                val bytes = ServerRepository.getSnapshot(videoSourceId) // todo move to CameraMovel
-                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                //todo передать в UI
-            }catch (e: Exception){
-                //todo  передать в UI
+                val cameras = ServerRepository.getCameras()
+                val camerasWithSnapshots = cameras.map { camera ->
+                    val snapshotUrl = camera.videoStreams.firstOrNull()?.accessPoint
+                    CameraWithSnapshot(camera, snapshotUrl)
+                }
+                _serverDataState.value = _serverDataState.value.copy(cameras = camerasWithSnapshots)
+            } catch (e: Exception) {
+                Log.e("ServerDataModel", "Error loading cameras: $e")
             }
         }
     }
+}
+
 
     //todo сделать экран со списком камер
     // каждая камера самостоятельна и грузит свою картинку своей моделью
 
 
-    fun loadCamerasOld() {
-        viewModelScope.launch {
-            try {
-                val camerasWithSnapshots = ServerRepository.fetchCamerasWithSnapshots()
-                _serverDataState.value = _serverDataState.value.copy(
-                    cameras = camerasWithSnapshots,
-                    cameraCount = camerasWithSnapshots.size
-                )
-            } catch (e: Exception) {
-                _serverDataState.value = _serverDataState.value.copy(
-                    cameras = emptyList(),
-                    cameraCount = 0
-                )
-                Log.e("LoadCamerasError", "Error loading cameras: $e")
-            }
-        }
-    }
-}
+//    fun loadCamerasOld() {
+//        viewModelScope.launch {
+//            try {
+//                val camerasWithSnapshots = ServerRepository.fetchCamerasWithSnapshots()
+//                _serverDataState.value = _serverDataState.value.copy(
+//                    cameras = camerasWithSnapshots,
+//                    cameraCount = camerasWithSnapshots.size
+//                )
+//            } catch (e: Exception) {
+//                _serverDataState.value = _serverDataState.value.copy(
+//                    cameras = emptyList(),
+//                    cameraCount = 0
+//                )
+//                Log.e("LoadCamerasError", "Error loading cameras: $e")
+//            }
+//        }
+//    }
+//
