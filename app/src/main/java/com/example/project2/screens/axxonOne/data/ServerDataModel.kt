@@ -3,6 +3,7 @@ package com.example.project2.screens.axxonOne.data
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.project2.structure.axxonOne.Camera
 import com.example.project2.structure.axxonOne.CameraWithSnapshot
 import com.example.project2.utils.ServerRepository
 import kotlinx.coroutines.Dispatchers
@@ -23,10 +24,19 @@ class ServerDataModel : ViewModel() {
         }
     }
 
+    private val cameras: MutableList<Camera> = mutableListOf()
+
+    fun getCamera(cameraId: String): Camera {
+        return cameras
+            .firstOrNull { it.id() == cameraId }
+            ?: throw RuntimeException("Camera id not found $cameraId")
+    }
+
     fun loadCameras() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val cameras = ServerRepository.getCameras()
+                cameras.clear()
+                cameras.addAll(ServerRepository.getCameras())
                 val camerasWithSnapshots = cameras.map { camera ->
                     val snapshotUrl = camera.videoStreams.firstOrNull()?.accessPoint
                     CameraWithSnapshot(camera, snapshotUrl)
@@ -40,8 +50,8 @@ class ServerDataModel : ViewModel() {
 }
 
 
-    //todo сделать экран со списком камер
-    // каждая камера самостоятельна и грузит свою картинку своей моделью
+//todo сделать экран со списком камер
+// каждая камера самостоятельна и грузит свою картинку своей моделью
 // todo fun loadCameras() {
 //        viewModelScope.launch(Dispatchers.IO) {
 //            val cameras = ServerRepository.getCameras()
@@ -55,7 +65,6 @@ class ServerDataModel : ViewModel() {
 //                //todo  передать в UI
 //            }
 //        }
-
 
 
 //    fun loadCamerasOld() {
