@@ -1,4 +1,4 @@
-package com.example.project2.screens.camera
+package com.example.project2.screens.axxonOne.camera
 
 import android.graphics.Bitmap
 

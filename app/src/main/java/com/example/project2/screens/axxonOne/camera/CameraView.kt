@@ -1,4 +1,4 @@
-package com.example.project2.screens.camera
+package com.example.project2.screens.axxonOne.camera
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -15,10 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.project2.screens.axxonOne.data.ServerDataModel
-import com.example.project2.structure.axxonOne.Camera
 import com.example.project2.utils.Sizes.size_m
 
 @Composable

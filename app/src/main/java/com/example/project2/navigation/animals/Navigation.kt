@@ -1,4 +1,4 @@
-package com.example.project2.navigation
+package com.example.project2.navigation.animals
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -28,6 +28,5 @@ fun AppNavigation(navController: NavHostController) {
                 )
             }
         }
-        //todo remove from nav +
     }
 }

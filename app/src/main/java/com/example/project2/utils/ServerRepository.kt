@@ -2,7 +2,7 @@ package com.example.project2.utils
 
 import android.util.Log
 import com.example.project2.server.RetrofitInstance
-import com.example.project2.structure.axxonOne.Camera
+import com.example.project2.structure.axxonOne.cameraInfo.Camera
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

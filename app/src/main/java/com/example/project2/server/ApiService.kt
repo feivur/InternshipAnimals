@@ -1,7 +1,7 @@
 package com.example.project2.server
 
 import com.example.project2.server.version.ServerVersionResponse
-import com.example.project2.structure.axxonOne.CameraList
+import com.example.project2.structure.axxonOne.cameraInfo.CameraList
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Path

@@ -3,8 +3,8 @@ package com.example.project2.screens.axxonOne.data
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.project2.structure.axxonOne.Camera
-import com.example.project2.structure.axxonOne.CameraWithSnapshot
+import com.example.project2.structure.axxonOne.cameraInfo.Camera
+import com.example.project2.structure.axxonOne.cameraInfo.CameraWithSnapshot
 import com.example.project2.utils.ServerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.project2.structure.axxonOne.Camera
 import com.example.project2.utils.Sizes.size_m
 import com.example.project2.utils.Sizes.size_s
 import com.example.project2.utils.Sizes.text_size_l

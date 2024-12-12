@@ -1,4 +1,4 @@
-package com.example.project2.structure.axxonOne
+package com.example.project2.structure.axxonOne.cameraInfo
 
 data class AudioStream(
     val accessPoint: String,
