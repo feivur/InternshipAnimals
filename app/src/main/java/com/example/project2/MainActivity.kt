@@ -1,8 +1,11 @@
 package com.example.project2
 
 import android.os.Bundle
+import android.util.Base64
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -19,23 +22,28 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navController = rememberNavController()
-            val serverDataModel: ServerDataModel = viewModel()
-
+            val viewModelStoreOwner = LocalViewModelStoreOwner.current
             NavHost(navController = navController, startDestination = "server_version") {
                 composable("server_version") {
-                    ServerDataScreen { camera ->
-                        navController.navigate("camera_view/${camera.displayId}")
+                    CompositionLocalProvider(
+                        LocalViewModelStoreOwner provides viewModelStoreOwner!!
+                    ) {
+                        ServerDataScreen(navController)
                     }
                 }
                 composable(
                     route = "camera_view/{cameraId}",
                     arguments = listOf(navArgument("cameraId") { type = NavType.StringType })
                 ) { backStackEntry ->
-                    val cameraId = backStackEntry.arguments?.getString("cameraId")!!
-                    val cameraWithSnapshot = serverDataModel.serverDataState.value.cameras
-                        .find { it.camera.displayId == cameraId }
-                        ?: throw RuntimeException("Camera not found")
-                    CameraView(camera = cameraWithSnapshot.camera)
+                    CompositionLocalProvider(
+                        LocalViewModelStoreOwner provides viewModelStoreOwner!!
+                    ) {
+                        // todo разобраться с Base64
+                        // https://www.base64decode.org/
+                        val cameraIdBase64 = backStackEntry.arguments?.getString("cameraId")!!
+                        val cameraId = Base64.decode(cameraIdBase64, Base64.URL_SAFE).decodeToString()
+                        CameraView(cameraId)
+                    }
                 }
             }
         }

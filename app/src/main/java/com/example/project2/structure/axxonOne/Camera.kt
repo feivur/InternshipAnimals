@@ -19,4 +19,6 @@ data class Camera(
     val textSources: List<Any>,
     val vendor: String,
     val videoStreams: List<VideoStream>
-)
+){
+    fun id() = videoStreams.first().accessPoint
+}

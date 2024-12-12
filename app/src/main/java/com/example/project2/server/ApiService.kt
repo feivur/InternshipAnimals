@@ -23,6 +23,9 @@ interface ApiService {
         @Query("w") width: Int? = null,
         @Query("h") height: Int? = null
     ): retrofit2.Response<ResponseBody>
+
+    //todo получить список событий детекторов
+    // http://136.243.144.109:8000/asip-api/archive/events/detectors/20241212T111205.843/20241211T105705.843?limit=20&offset=0&type=&limit_to_archive=1
 }
 
 
