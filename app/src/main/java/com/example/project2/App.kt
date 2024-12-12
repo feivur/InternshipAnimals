@@ -21,8 +21,6 @@ class App : Application() {
     }
 
     companion object {
-        // Ссылка на DAO
-        //todo выпилить +
 
         var animalsRepository: AnimalsRepository? = null
             private set

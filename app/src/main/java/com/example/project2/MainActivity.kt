@@ -36,8 +36,6 @@ class MainActivity : ComponentActivity() {
                     CompositionLocalProvider(
                         LocalViewModelStoreOwner provides viewModelStoreOwner!!
                     ) {
-                        // todo разобраться с Base64
-                        // https://www.base64decode.org/
                         val cameraIdBase64 = backStackEntry.arguments?.getString("cameraId")!!
                         val cameraId = Base64.decode(cameraIdBase64, Base64.URL_SAFE).decodeToString()
                         CameraView(cameraId)
@@ -47,3 +45,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+// todo разобраться с Base64
+// https://www.base64decode.org/

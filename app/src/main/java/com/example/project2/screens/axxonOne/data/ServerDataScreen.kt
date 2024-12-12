@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,10 +47,16 @@ fun ServerDataScreen(
             modifier = Modifier.padding(size_m),
             fontSize = text_size_l
         )
-//todo LazyColumn{
-//    items(cameras){camera ->
-//        CameraView(camera)
-//    }
+
+        //todo events
+        Button(
+            onClick = { navController.navigate("events_screen") },
+            modifier = Modifier.padding(size_m)
+        ) {
+            Text(text = "Показать события")
+        }
+        //todo
+
         LazyColumn(modifier = Modifier.padding(size_m)) {
             itemsIndexed(serverDataState.cameras) { index, cameraWithSnapshot ->
                 val camera = cameraWithSnapshot.camera
@@ -58,7 +65,13 @@ fun ServerDataScreen(
                     modifier = Modifier
                         .padding(size_s)
                         .clickable {
-                            val cameraIdBase64 = Base64.encode(camera.id().toByteArray(), Base64.URL_SAFE).decodeToString()
+                            val cameraIdBase64 = Base64
+                                .encode(
+                                    camera
+                                        .id()
+                                        .toByteArray(), Base64.URL_SAFE
+                                )
+                                .decodeToString()
                             navController.navigate("camera_view/${cameraIdBase64}")
                             //onCameraClick(camera)
                         }

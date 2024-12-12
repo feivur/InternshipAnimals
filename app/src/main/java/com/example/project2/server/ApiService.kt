@@ -29,8 +29,3 @@ interface ApiService {
 }
 
 
-//todo /camerа/list - Получить картинку с камеры через access point  и плагин Gson to kotlin -  вывести ее под версией сервера
-// https://docs.itvgroup.ru/confluence/pages/viewpage.action?pageId=198799226
-// https://plugins.jetbrains.com/plugin/9960-json-to-kotlin-class-jsontokotlinclass-
-// https://docs.itvgroup.ru/confluence/pages/viewpage.action?pageId=198799219
-
