@@ -7,5 +7,10 @@ data class Event(
     val source: String,
     val origin: String,
     val duration: String?,
-    val rectangles: List<Rectangle>
+    val rectangles: List<Rectangle>,
+
+
+    val alertState: String? = null,
+    val multiPhaseSyncId: String? = null,
+    val extra: List<Extra>? = null
 )

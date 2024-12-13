@@ -10,18 +10,25 @@ import kotlinx.coroutines.flow.flow
 object ServerRepository {
 
     //todo
-    suspend fun getEvents(): List<Event> {
+    suspend fun getEvents(
+        endTime: String,
+        beginTime: String,
+        limit: Int,
+        offset: Int,
+        limitToArchive: Int
+    ): List<Event> {
         return RetrofitInstance.api.getEvents(
-            endTime = "20241212T111205.843",
-            beginTime = "20241211T105705.843",
-            limit = 20,
-            offset = 0,
+            endTime = endTime,
+            beginTime = beginTime,
+            limit = limit,
+            offset = offset,
             type = null,
-            limitToArchive = 1
+            limitToArchive = limitToArchive
         ).events
     }
-
     //todo
+
+
     suspend fun getCameras(): List<Camera>{
         val response = RetrofitInstance.api.getCameras()
         return response.cameras
