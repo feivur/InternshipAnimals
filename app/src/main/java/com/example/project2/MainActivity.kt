@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.project2.screens.axxonOne.camera.CameraView
 import com.example.project2.screens.axxonOne.data.ServerDataScreen
+import com.example.project2.screens.axxonOne.events.EventsScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,10 +42,17 @@ class MainActivity : ComponentActivity() {
                         CameraView(cameraId)
                     }
                 }
+                // Новый маршрут для EventsScreen
+                composable("events_screen") {
+                    CompositionLocalProvider(
+                        LocalViewModelStoreOwner provides viewModelStoreOwner!!
+                    ) {
+                        EventsScreen()
+                    }
+                }
             }
         }
     }
 }
-
 // todo разобраться с Base64
 // https://www.base64decode.org/

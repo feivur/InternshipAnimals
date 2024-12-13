@@ -2,13 +2,26 @@ package com.example.project2.utils
 
 import android.util.Log
 import com.example.project2.server.RetrofitInstance
+import com.example.project2.structure.axxonOne.cameraEvents.Event
 import com.example.project2.structure.axxonOne.cameraInfo.Camera
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-
 object ServerRepository {
 
+    //todo
+    suspend fun getEvents(): List<Event> {
+        return RetrofitInstance.api.getEvents(
+            endTime = "20241212T111205.843",
+            beginTime = "20241211T105705.843",
+            limit = 20,
+            offset = 0,
+            type = null,
+            limitToArchive = 1
+        ).events
+    }
+
+    //todo
     suspend fun getCameras(): List<Camera>{
         val response = RetrofitInstance.api.getCameras()
         return response.cameras
