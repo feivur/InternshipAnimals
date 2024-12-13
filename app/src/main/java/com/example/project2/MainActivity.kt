@@ -42,7 +42,6 @@ class MainActivity : ComponentActivity() {
                         CameraView(cameraId)
                     }
                 }
-                // Новый маршрут для EventsScreen
                 composable("events_screen") {
                     CompositionLocalProvider(
                         LocalViewModelStoreOwner provides viewModelStoreOwner!!

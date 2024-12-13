@@ -9,23 +9,23 @@ import java.util.concurrent.TimeUnit
 
 
 object RetrofitInstance {
-
+    //чтобы пытаться много раз
     private fun retryInterceptor(retryCount: Int = 3): Interceptor {
         return Interceptor { chain ->
-            var attempt = 0
+            var attempt = 0//счетчик попыток
             var response: okhttp3.Response
             do {
                 response = chain.proceed(chain.request())
                 attempt++
-            } while (!response.isSuccessful && attempt < retryCount)
+            } while (!response.isSuccessful && attempt < retryCount)//повтор при ошибке
             response
         }
     }
 
     private val client = OkHttpClient.Builder()
-        .connectTimeout(60, TimeUnit.SECONDS)
-        .readTimeout(60, TimeUnit.SECONDS)
-        .writeTimeout(60, TimeUnit.SECONDS)
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
         .retryOnConnectionFailure(true)
         .addInterceptor(retryInterceptor())
         .addInterceptor { chain ->
