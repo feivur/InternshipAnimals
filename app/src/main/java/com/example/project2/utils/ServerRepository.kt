@@ -20,8 +20,9 @@ object ServerRepository {
             limitToArchive = 1
         ).events
     }
-
     //todo
+
+
     suspend fun getCameras(): List<Camera>{
         val response = RetrofitInstance.api.getCameras()
         return response.cameras

@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class CameraModel : ViewModel() {
@@ -26,7 +27,9 @@ class CameraModel : ViewModel() {
                 val bytes = ServerRepository.getSnapshot(videoStream)
                 val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 
-                _state.value = _state.value.copy(bitmap = bitmap)
+                withContext(Dispatchers.Main) {
+                    _state.value = _state.value.copy(bitmap = bitmap)
+                }
             } catch (e: Exception) {
                 Log.e("CameraModel", "Error loading image: $e")
             }

@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ServerDataModel : ViewModel() {
 
@@ -17,9 +18,11 @@ class ServerDataModel : ViewModel() {
     val serverDataState: StateFlow<ServerDataState> get() = _serverDataState
 
     fun loadServerVersion() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             ServerRepository.fetchServerVersion().collect { version ->
-                _serverDataState.value = _serverDataState.value.copy(version = version)
+                withContext(Dispatchers.Main) {
+                    _serverDataState.value = _serverDataState.value.copy(version = version)
+                }
             }
         }
     }
@@ -37,11 +40,16 @@ class ServerDataModel : ViewModel() {
             try {
                 cameras.clear()
                 cameras.addAll(ServerRepository.getCameras())
+
                 val camerasWithSnapshots = cameras.map { camera ->
                     val snapshotUrl = camera.videoStreams.firstOrNull()?.accessPoint
                     CameraWithSnapshot(camera, snapshotUrl)
                 }
-                _serverDataState.value = _serverDataState.value.copy(cameras = camerasWithSnapshots)
+
+                withContext(Dispatchers.Main) {
+                    _serverDataState.value =
+                        _serverDataState.value.copy(cameras = camerasWithSnapshots)
+                }
             } catch (e: Exception) {
                 Log.e("ServerDataModel", "Error loading cameras: $e")
             }

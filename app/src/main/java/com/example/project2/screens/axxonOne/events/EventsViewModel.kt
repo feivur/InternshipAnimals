@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class EventsViewModel : ViewModel() {
 
@@ -18,10 +19,13 @@ class EventsViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val events = ServerRepository.getEvents()
-                _eventsState.value = _eventsState.value.copy(events = events)
+                withContext(Dispatchers.Main) {
+                    _eventsState.value = _eventsState.value.copy(events = events)
+                }
             } catch (e: Exception) {
                 Log.e("EventsViewModel", "Error loading events: $e")
             }
         }
     }
+
 }
