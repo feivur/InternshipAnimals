@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-//todo
+
 class CameraModel : ViewModel() {
     private val _state = MutableStateFlow(CameraState())
     val state: StateFlow<CameraState> get() = _state

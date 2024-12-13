@@ -1,16 +1,35 @@
 package com.example.project2
 
 import android.app.Application
-import androidx.room.Room
-import com.example.project2.db.animals.RoomDB
+import android.content.Context
 import com.example.project2.utils.AnimalsRepository
+import com.example.project2.utils.animalsStub.StubAnimalsRepository
 
+class App : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        appContext = applicationContext
+
+        animalsRepository = StubAnimalsRepository() // используем заглушку
+    }
+
+    companion object {
+        lateinit var appContext: Context
+            private set
+
+        lateinit var animalsRepository: AnimalsRepository
+            private set
+    }
+
+}
+
+/* animals
 class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
         // Инициализация бд
-        val db = Room.databaseBuilder(
+            val db = Room.databaseBuilder(
             applicationContext,
             RoomDB::class.java, "animals_db"
         )
@@ -21,11 +40,14 @@ class App : Application() {
     }
 
     companion object {
-        // Ссылка на DAO
-        //todo выпилить +
+        private var _animalsRepository: AnimalsRepository? = null
 
-        var animalsRepository: AnimalsRepository? = null
-            private set
-
-    }
-}
+        val animalsRepository: AnimalsRepository
+            get() {
+                if (_animalsRepository == null) {
+                    throw IllegalStateException("AnimalsRepository не инициализирован!")
+                }
+                return _animalsRepository!!
+            }
+    }}
+*/

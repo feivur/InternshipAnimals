@@ -1,5 +1,6 @@
 package com.example.project2.server
 
+import com.example.project2.server.events.EventsResponse
 import com.example.project2.server.version.ServerVersionResponse
 import com.example.project2.structure.axxonOne.cameraInfo.CameraList
 import okhttp3.ResponseBody
@@ -24,13 +25,22 @@ interface ApiService {
         @Query("h") height: Int? = null
     ): retrofit2.Response<ResponseBody>
 
+    //todo
+    @GET("archive/events/detectors/{endTime}/{beginTime}")
+    suspend fun getEvents(
+        @Path("endTime") endTime: String,
+        @Path("beginTime") beginTime: String,
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int,
+        @Query("type") type: String? = null,
+        @Query("limit_to_archive") limitToArchive: Int? = null
+    ): EventsResponse
+//todo
+
+
+
     //todo получить список событий детекторов
     // http://136.243.144.109:8000/asip-api/archive/events/detectors/20241212T111205.843/20241211T105705.843?limit=20&offset=0&type=&limit_to_archive=1
 }
 
-
-//todo /camerа/list - Получить картинку с камеры через access point  и плагин Gson to kotlin -  вывести ее под версией сервера
-// https://docs.itvgroup.ru/confluence/pages/viewpage.action?pageId=198799226
-// https://plugins.jetbrains.com/plugin/9960-json-to-kotlin-class-jsontokotlinclass-
-// https://docs.itvgroup.ru/confluence/pages/viewpage.action?pageId=198799219
 
