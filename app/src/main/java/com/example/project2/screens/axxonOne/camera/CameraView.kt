@@ -14,9 +14,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.project2.screens.axxonOne.data.ServerDataModel
+import com.example.project2.utils.Sizes.size_large
 import com.example.project2.utils.Sizes.size_m
 
 @Composable
@@ -45,7 +45,7 @@ fun CameraView(cameraId: String) {
             Image(
                 bitmap = state.bitmap!!.asImageBitmap(),
                 contentDescription = "Camera Snapshot",
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier.size(size_large)
             )
         } ?: Text(text = "Loading snapshot...")
     }

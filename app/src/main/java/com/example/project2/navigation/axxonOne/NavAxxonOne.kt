@@ -27,9 +27,13 @@ object AppNavigation {
                 arguments = listOf(navArgument("cameraId") { type = NavType.StringType })
             ) { backStackEntry ->
                 val cameraIdBase64 = backStackEntry.arguments?.getString("cameraId")!!
-                val cameraId =
-                    Base64.decode(cameraIdBase64)//, Base64.URL_SAFE)//- по идее он сам должен справляться с превращением / в _
-                        .decodeToString()
+                //преобразуем символы для URL-safe Base64
+                val correctedBase64 = cameraIdBase64
+                    .replace('_', '/')
+                    .replace('-', '+')
+                    .padEnd(cameraIdBase64.length + (4 - cameraIdBase64.length % 4) % 4, '=')
+
+                val cameraId = Base64.decode(correctedBase64).decodeToString()
                 CameraView(cameraId)
             }
             composable("events_screen") {

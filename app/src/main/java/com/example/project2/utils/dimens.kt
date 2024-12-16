@@ -9,6 +9,7 @@ object Sizes {
     val size_l = 24.dp
     val size_xl = 32.dp
     val size_xxl = 40.dp
+    val size_large = 200.dp
 
     val text_size_s = 12.sp
     val text_size_m = 16.sp
