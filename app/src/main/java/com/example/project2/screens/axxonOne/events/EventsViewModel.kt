@@ -5,13 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.project2.structure.axxonOne.cameraEvents.Event
 import com.example.project2.utils.ServerRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class EventsViewModel : ViewModel() {
+@HiltViewModel
+class EventsViewModel @Inject constructor(
+    private val serverRepository: ServerRepository
+) : ViewModel() {
 
     private val _eventsState = MutableStateFlow(EventsState())
     val eventsState: StateFlow<EventsState> get() = _eventsState
@@ -27,7 +32,7 @@ class EventsViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val events = ServerRepository.getEvents(
+                val events = serverRepository.getEvents(
                     endTime = endTime,
                     beginTime = beginTime,
                     limit = limit,

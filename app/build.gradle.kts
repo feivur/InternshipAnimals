@@ -60,8 +60,8 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose.v100)
 
     //Чистый Dagger
-    implementation(libs.dagger)
-    kapt(libs.dagger.compiler)
+    //  implementation(libs.dagger)
+    //  kapt(libs.dagger.compiler)
 
 
 

@@ -6,20 +6,25 @@ import androidx.lifecycle.viewModelScope
 import com.example.project2.structure.axxonOne.cameraInfo.Camera
 import com.example.project2.structure.axxonOne.cameraInfo.CameraWithSnapshot
 import com.example.project2.utils.ServerRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class ServerDataModel : ViewModel() {
+@HiltViewModel
+class ServerDataModel @Inject constructor(
+    private val serverRepository: ServerRepository
+) : ViewModel() {
 
     private val _serverDataState = MutableStateFlow(ServerDataState())
     val serverDataState: StateFlow<ServerDataState> get() = _serverDataState
 
     fun loadServerVersion() {
         viewModelScope.launch(Dispatchers.IO) {
-            ServerRepository.fetchServerVersion().collect { version ->
+            serverRepository.fetchServerVersion().collect { version ->
                 withContext(Dispatchers.Main) {
                     _serverDataState.value = _serverDataState.value.copy(version = version)
                 }
@@ -39,7 +44,7 @@ class ServerDataModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 cameras.clear()
-                cameras.addAll(ServerRepository.getCameras())
+                cameras.addAll(serverRepository.getCameras())
 
                 val camerasWithSnapshots = cameras.map { camera ->
                     val snapshotUrl = camera.videoStreams.firstOrNull()?.accessPoint

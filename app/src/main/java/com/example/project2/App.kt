@@ -4,7 +4,9 @@ import android.app.Application
 import android.content.Context
 import com.example.project2.utils.AnimalsRepository
 import com.example.project2.utils.animalsStub.StubAnimalsRepository
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class App : Application() {
     override fun onCreate() {
         super.onCreate()

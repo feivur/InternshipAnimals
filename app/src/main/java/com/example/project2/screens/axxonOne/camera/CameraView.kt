@@ -15,15 +15,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.project2.screens.axxonOne.data.ServerDataModel
 import com.example.project2.utils.Sizes.size_m
 
 @Composable
 fun CameraView(cameraId: String) {
 
-    val serverModel: ServerDataModel = viewModel(key = "")
-    val viewModel: CameraModel = viewModel(key = cameraId)
+    val serverModel: ServerDataModel = hiltViewModel()//viewModel(key = "")
+    val viewModel: CameraModel = hiltViewModel()//viewModel(key = cameraId)
 
     val state by viewModel.state.collectAsState()
 

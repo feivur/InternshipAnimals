@@ -16,8 +16,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.project2.utils.Sizes.size_m
 import com.example.project2.utils.Sizes.size_s
@@ -29,7 +29,8 @@ fun ServerDataScreen(
     navController: NavController
 ) {
     val mso = LocalViewModelStoreOwner.current
-    val viewModel: ServerDataModel = viewModel(key = "")
+    val viewModel: ServerDataModel =
+        hiltViewModel()//viewModel(key = "")//???- по идее должен автоматически передаваться
     val serverDataState by viewModel.serverDataState.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -48,14 +49,12 @@ fun ServerDataScreen(
             fontSize = text_size_l
         )
 
-        //todo events
         Button(
             onClick = { navController.navigate("events_screen") },
             modifier = Modifier.padding(size_m)
         ) {
             Text(text = "Показать события")
         }
-        //todo
 
         LazyColumn(modifier = Modifier.padding(size_m)) {
             itemsIndexed(serverDataState.cameras) { index, cameraWithSnapshot ->
