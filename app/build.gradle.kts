@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("kotlin-parcelize")
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+
 
 }
 
@@ -50,6 +52,20 @@ android {
 }
 
 dependencies {
+    // Hilt
+    implementation(libs.hilt.android) // Основная зависимость Hilt
+    kapt(libs.hilt.compiler) // Компилятор для Hilt
+
+    // Jetpack Compose Navigation hilt
+    implementation(libs.androidx.hilt.navigation.compose.v100)
+
+    //Чистый Dagger
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
+
+
+
+
     implementation(libs.coil.compose)
 
 
