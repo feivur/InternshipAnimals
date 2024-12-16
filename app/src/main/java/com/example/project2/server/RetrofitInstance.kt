@@ -37,7 +37,7 @@ object RetrofitInstance {
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://try.axxonsoft.com:8000/asip-api/")
+        .baseUrl("http://try.itvgroup.ru:8000")
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()

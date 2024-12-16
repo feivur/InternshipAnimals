@@ -28,13 +28,8 @@ object AppNavigation {
             ) { backStackEntry ->
                 val cameraIdBase64 = backStackEntry.arguments?.getString("cameraId")!!
                 //преобразуем символы для URL-safe Base64
-                val correctedBase64 = cameraIdBase64
-                    .replace('_', '/')
-                    .replace('-', '+')
-                    .padEnd(cameraIdBase64.length + (4 - cameraIdBase64.length % 4) % 4, '=')
 
-                val cameraId = Base64.decode(correctedBase64).decodeToString()
-                CameraView(cameraId)
+                CameraView(cameraIdBase64)
             }
             composable("events_screen") {
                 EventsScreen()

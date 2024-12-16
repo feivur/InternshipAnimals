@@ -18,16 +18,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.project2.screens.axxonOne.data.ServerDataModel
 import com.example.project2.utils.Sizes.size_large
 import com.example.project2.utils.Sizes.size_m
+import okio.ByteString.Companion.decodeHex
+import java.nio.charset.Charset
+import kotlin.io.encoding.ExperimentalEncodingApi
 
+@OptIn(ExperimentalEncodingApi::class)
 @Composable
-fun CameraView(cameraId: String) {
+fun CameraView(cameraIdHex: String) {
 
     val serverModel: ServerDataModel = hiltViewModel()//viewModel(key = "")
     val viewModel: CameraModel = hiltViewModel()//viewModel(key = cameraId)
 
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(cameraId) {
+    LaunchedEffect(cameraIdHex) {
+        val cameraId = cameraIdHex.decodeHex().string(Charset.defaultCharset())
         val camera = serverModel.getCamera(cameraId)
         viewModel.init(camera)
     }

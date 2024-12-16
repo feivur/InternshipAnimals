@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -46,8 +45,6 @@ fun EventsScreen() {
     var showBeginDatePicker by remember { mutableStateOf(false) }
     var showEndDatePicker by remember { mutableStateOf(false) }
 
-    var isLoading by remember { mutableStateOf(false) }
-    var errorMessage by remember { mutableStateOf("") }
     var finalUrl by remember { mutableStateOf("") }    //итог
 
 
@@ -99,8 +96,6 @@ fun EventsScreen() {
         Button(
             onClick = {
                 if (beginTime.isNotEmpty() && endTime.isNotEmpty()) {
-                    isLoading = true
-                    errorMessage = ""
                     finalUrl = "http://try.axxonsoft.com:8000/asip-api/" +
                             "archive/events/detectors/$endTime/$beginTime?limit=" +
                             "${limit.ifEmpty { "10" }}&offset=${offset.ifEmpty { "0" }}&limit_to_archive=" +
@@ -113,13 +108,8 @@ fun EventsScreen() {
                         limit = limit.toIntOrNull() ?: 10,
                         offset = offset.toIntOrNull() ?: 0,
                         limitToArchive = if (limitToArchive) 1 else 0
-                    ) {
+                    )
 
-                        isLoading = false
-                        if (it.isEmpty()) errorMessage = "События не найдены."
-                    }
-                } else {
-                    errorMessage = "Пожалуйста, заполните все поля."
                 }
             },
             modifier = Modifier.padding(vertical = size_s)
@@ -136,53 +126,51 @@ fun EventsScreen() {
         }
 
 //индикатор загрузки
-        if (isLoading) {
+        if (eventsState.loading is Loading.Progress) {
             LoadingAnimation()
         }
 
-//показ ошибки
-        if (errorMessage.isNotEmpty()) {
-            Text(
-                text = errorMessage, color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(vertical = size_s)
-            )
-        }
-
 //список событий
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(eventsState.events) { event ->
-                Text(
-                    text = "Событие: ${event.type}, Время: ${event.timestamp}",
-                    modifier = Modifier.padding(size_s)
-                )
+        if (eventsState.loading is Loading.Success)
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(eventsState.events) { event ->
+                    Text(
+                        text = "Событие: ${event.type}, Время: ${event.timestamp}",
+                        modifier = Modifier.padding(size_s)
+                    )
+                    //todo сделать модель для отдельного события.
+                }
             }
+
+
+        if (eventsState.loading is Loading.Error) {
+            //todo показать сообщение об ошибке
         }
-    }
 
 
 //DateTimePicker для начального времени
-    if (showBeginDatePicker) {
-        DateTimePicker(
-            onDismiss = { showBeginDatePicker = false },
-            onDateTimeSelected = { dateTime ->
-                beginTime = dateTime
-                showBeginDatePicker = false
-            }
-        )
-    }
+        if (showBeginDatePicker) {
+            DateTimePicker(
+                onDismiss = { showBeginDatePicker = false },
+                onDateTimeSelected = { dateTime ->
+                    beginTime = dateTime
+                    showBeginDatePicker = false
+                }
+            )
+        }
 
 //для конечного времени
-    if (showEndDatePicker) {
-        DateTimePicker(
-            onDismiss = { showEndDatePicker = false },
-            onDateTimeSelected = { dateTime ->
-                endTime = dateTime
-                showEndDatePicker = false
-            }
-        )
+        if (showEndDatePicker) {
+            DateTimePicker(
+                onDismiss = { showEndDatePicker = false },
+                onDateTimeSelected = { dateTime ->
+                    endTime = dateTime
+                    showEndDatePicker = false
+                }
+            )
+        }
     }
 }
-
 
 //pfuheprf
 @Composable

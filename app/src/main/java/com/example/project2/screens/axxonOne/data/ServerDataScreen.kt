@@ -24,6 +24,7 @@ import com.example.project2.utils.Sizes.size_s
 import com.example.project2.utils.Sizes.text_size_l
 
 
+@OptIn(ExperimentalStdlibApi::class)
 @Composable
 fun ServerDataScreen(
     navController: NavController
@@ -64,14 +65,14 @@ fun ServerDataScreen(
                     modifier = Modifier
                         .padding(size_s)
                         .clickable {
-                            val cameraIdBase64 = Base64
+                            val cameraIdHex =  camera.id().toByteArray().toHexString(HexFormat.Default)
+                     /*       val cameraIdBase64 = Base64
                                 .encode(
                                     camera
                                         .id()
                                         .toByteArray(), Base64.URL_SAFE
-                                )
-                                .decodeToString()
-                            navController.navigate("camera_view/${cameraIdBase64}")
+                                )*/
+                           navController.navigate("camera_view/${cameraIdHex}")
                             //onCameraClick(camera)
                         }
                 )
@@ -79,3 +80,5 @@ fun ServerDataScreen(
         }
     }
 }
+
+

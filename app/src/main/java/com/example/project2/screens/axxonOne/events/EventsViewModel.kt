@@ -27,8 +27,10 @@ class EventsViewModel @Inject constructor(
         limit: Int,
         offset: Int,
         limitToArchive: Int,
-        onResult: (List<Event>) -> Unit
     ) {
+        _eventsState.value = _eventsState.value.copy(
+            loading = Loading.Progress()
+        )
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -40,13 +42,17 @@ class EventsViewModel @Inject constructor(
                     limitToArchive = limitToArchive
                 )
                 withContext(Dispatchers.Main) {
-                    _eventsState.value = _eventsState.value.copy(events = events)
-                    onResult(events)
+                    _eventsState.value = _eventsState.value.copy(
+                        events = events,
+                        loading = Loading.Success()
+                    )
                 }
             } catch (e: Exception) {
                 Log.e("EventsViewModel", "Error loading events: $e")
                 withContext(Dispatchers.Main) {
-                    onResult(emptyList())
+                    _eventsState.value = _eventsState.value.copy(
+                        loading = Loading.Error(e)
+                    )
                 }
             }
         }
