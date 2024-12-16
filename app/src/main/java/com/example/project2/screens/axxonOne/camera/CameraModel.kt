@@ -6,14 +6,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.project2.structure.axxonOne.cameraInfo.Camera
 import com.example.project2.utils.ServerRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
+@HiltViewModel
+class CameraModel @Inject constructor(
+    private val serverRepository: ServerRepository
+) : ViewModel() {
 
-class CameraModel : ViewModel() {
     private val _state = MutableStateFlow(CameraState())
     val state: StateFlow<CameraState> get() = _state
 
@@ -24,7 +29,7 @@ class CameraModel : ViewModel() {
             try {
                 val videoStream = camera.videoStreams.firstOrNull()?.accessPoint
                     ?: throw Exception("No video stream available")
-                val bytes = ServerRepository.getSnapshot(videoStream)
+                val bytes = serverRepository.getSnapshot(videoStream)
                 val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 
                 withContext(Dispatchers.Main) {

@@ -28,13 +28,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.project2.utils.Sizes.size_m
 import com.example.project2.utils.Sizes.size_s
 
 @Composable
 fun EventsScreen() {
-    val viewModel: EventsViewModel = viewModel()
+    val viewModel: EventsViewModel = hiltViewModel()//viewModel()
     val eventsState by viewModel.eventsState.collectAsState()
 
     var beginTime by remember { mutableStateOf("") }

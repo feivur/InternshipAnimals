@@ -1,13 +1,19 @@
 package com.example.project2.utils
 
 import android.util.Log
+import com.example.project2.server.ApiService
 import com.example.project2.server.RetrofitInstance
 import com.example.project2.structure.axxonOne.cameraEvents.Event
 import com.example.project2.structure.axxonOne.cameraInfo.Camera
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object ServerRepository {
+@Singleton
+class ServerRepository @Inject constructor(//todo?
+    private val apiService: ApiService
+) {
 
     //todo
     suspend fun getEvents(
